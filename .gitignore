@@ -1,0 +1,8 @@
+*~
+*.tgz
+build/
+dist/
+node_modules/
+JsDoc/
+JsDoc.zip
+package-lock.json

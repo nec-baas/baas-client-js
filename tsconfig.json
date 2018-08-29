@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "declaration": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "lib": ["dom", "es5", "es2015", "scripthost"],
+    "types": ["node"],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+    //"rootDir": ".",
+    //"outDir": "build/"
+  },
+  "files": [
+    "build/baas.ts"
+  ],
+  "include": [
+    "ut/*.ts"
+  ]
+}
