@@ -19,8 +19,12 @@ export class HttpXhr extends HttpRequestExecutor {
         this._onReadyStateChange = this._onReadyStateChange.bind(this);
     }
 
+    setReturnRawMessage(rawMessage: boolean): void {
+        throw new Error("Not supported");
+    }
+
     execute(method: string, url: string, headers: Headers, body: any, timeout: number,
-            responseType: string, receiveResponseHeaders: boolean): void {
+            responseType: string, receiveResponseHeaders: boolean, useHttp2 : boolean): void {
         this._receiveResponseHeaders = receiveResponseHeaders;
 
         this._xhr = this._createXhr();
@@ -54,6 +58,11 @@ export class HttpXhr extends HttpRequestExecutor {
         }
 
         this._xhr.send(body);
+    }
+
+    // internal use only
+    static closeHttp2Session(authority: string): void {
+        throw new Error("not support");
     }
 
     /**

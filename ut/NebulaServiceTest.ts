@@ -8,6 +8,7 @@ const APP_ID = "appId1";
 const APP_KEY = "appKey1";
 const BASE_URI = "http://api.example.com/api";
 const DEBUG_MODE = "debug";
+const ENABLE_HTTP2 = true;
 
 describe("NebulaService", () => {
     describe("初期化", () => {
@@ -18,7 +19,8 @@ describe("NebulaService", () => {
                 "tenant": TENANT_ID,
                 "appId": APP_ID,
                 "appKey": APP_KEY,
-                "baseUri": BASE_URI
+                "baseUri": BASE_URI,
+                "enableHttp2": ENABLE_HTTP2
             };
         });
 
@@ -28,6 +30,7 @@ describe("NebulaService", () => {
             assert.deepEqual(Nebula.getAppID(), APP_ID, "アプリケーションID が正しく初期化されていること");
             assert.deepEqual(Nebula.getAppKey(), APP_KEY, "アプリケーションキーが正しく初期化されていること");
             assert.deepEqual(Nebula.getBaseUri(), BASE_URI, "エンドポイントURL が正しく初期化されていること");
+            assert.deepEqual(Nebula.getHttp2(), ENABLE_HTTP2, "HTTP/2設定が正しく初期化されていること");
         }
 
         it("initialize − 最小設定", () => {
@@ -93,6 +96,25 @@ describe("NebulaService", () => {
         const afterKey = Nebula.getAppKey();
         
         assert.equal(afterKey, newKey, "指定されたキーへの変更が可能であること");
+    });
+
+    it("setHttp2 − HTTP/2設定を変更する", () => {
+        Nebula.initialize({
+            tenant: TENANT_ID,
+            appId: APP_ID,
+            appKey: APP_KEY,
+            baseUri: BASE_URI,
+            enableHttp2: false
+        });
+
+        const beforeSetting = Nebula.getHttp2();
+        assert.equal(beforeSetting, false, "初期値が取得できること");
+
+        const newSetting = true;
+        Nebula.setHttp2(newSetting);
+        const afterSetting = Nebula.getHttp2();
+
+        assert.equal(afterSetting, newSetting, "指定された設定の変更が可能であること");
     });
 
     describe("プロキシ設定", () => {

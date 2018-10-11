@@ -23,6 +23,24 @@ export interface FileInfo {
 }
 
 /**
+ * ファイルリクエスト用オプション
+ */
+export interface FileRequestOptions {
+    /** Raw リクエスト(trueの場合、extraResponseは無効) **/
+    rawRequest?: boolean;
+    /** ステータスコード、ヘッダ情報を含めて取得する **/
+    extraResponse?: boolean;
+    /** if-matchヘッダの付与 **/
+    ifMatch?: string;
+     /** if-range ヘッダの付与 **/
+    ifRange?: string;
+    /** 開始位置 **/
+    rangeStart?: number;
+    /** 終了位置 **/
+    rangeEnd?: number;
+}
+
+/**
  * FileBucket 実装
  * @private
  */
@@ -519,38 +537,271 @@ export class FileBucket extends BaseBucket {
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     load(fileName: string, callbacks?: Callbacks): Promise<any> {
-        nbLogger("FileBucket.load()");
+        return this._load(fileName, undefined, callbacks);
+    }
+
+    /**
+     * @memberOf FileBucket
+     * @description
+     *      ファイルバケットからオプションを指定してファイルを読み込む.
+     *      <p>Node.js のみで実行可能。
+     * @param {String} fileName ファイルバケットから読み込むファイルの名前
+     * @param {Object} options   ファイル取得のパラメータ(オプション)
+     * <pre>
+     *  {
+     *      "rawRequest" : ファイルをRaw messageとして読み込む場合にtrueを設定する。(オプション)
+     *                     trueの場合、extraResponseは無効となる。原則として応答の取得にはPromiseを使用すること。
+     *                     HTTP/1.1において、処理が成功した場合、Promise には http.IncomingMessage が返される。
+     *                     http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *                     データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
+     *                     リクエスト送信が失敗した場合、Promise には error が返される。
+     *                     HTTP/2において、処理が成功した場合、Promise には http2.ClientHttp2Stream が返される。
+     *                     ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *                     HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
+     *                     具体的な指定方法はexamplesを参照。
+     *      "extraResponse" : レスポンスにステータスコード、ヘッダを追加する。(オプション)
+     *                        通常レスポンスにはBuffer オブジェクトを返却するが、
+     *                        extraResponseをtrueに設定した場合、以下の形式で返却を行う。
+     *                          {
+     *                            status  : ステータスコード,
+     *                            headers : レスポンスヘッダ情報を含むオブジェクト,
+     *                            body    : ファイルデータが格納されたBufferオブジェクト
+     *                          }
+     *      "ifMatch" : If-Matchヘッダを付与する場合に指定(オプション)
+     *                  値はファイルのETagを使用する。
+     *                  サーバのファイルが更新されている場合、エラーを返却する。
+     *      "ifRange" : If-Rangeヘッダを付与する場合に指定 (オプション)
+     *                  値はファイルのETagを使用する。
+     *                  rangeStart/rangeEndを指定しない場合は無効である。
+     *                  ETag不一致の場合、rangeStart/rangeEndをは参照せず更新済みの新しいファイルを取得する。
+     *                  ifMatchを優先して評価する。ファイルが更新されている場合でもファイル取得を行うには、ifRangeのみを指定すること。
+     *      "rangeStart : 取得するファイルの開始位置(オプション)
+     *      "rangeEnd"  : ファイルの終了位置(オプション)
+     *                    rangeStartと組み合わせて、"0〜(ファイルサイズ-1)"の範囲で指定を行う。
+     *                    rangeEndのみ指定した場合は、末尾の取得バイト数を表す。
+     *                    rangeStart/rangeEndの値をベースにRangeヘッダを付与する。
+     *                    不正な範囲の場合、サーバでファイルのサイズに合わせて値を変更する場合がある。
+     *                    メタデータからファイルサイズを検証し、ifMatch、ifRangeと組み合わせて使用することを推奨する。
+     *                    具体的な指定方法はexamplesを参照。
+     *  }
+     * </pre>
+     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック(オプション)
+     * <pre>
+     * ・処理が成功した場合、success の呼び出しにて通知する。
+     *     success の書式は以下の通りとする。
+     *         success(data)
+     *             data : - ファイルのBufferオブジェクト
+     *                    - ファイルデータを含むオブジェクト(optionに {extraResponse:true} を指定した場合)
+     *                      {
+     *                        status : ステータスコード,
+     *                        headers : レスポンスヘッダ情報を含むオブジェクト,
+     *                        body : ファイルデータが格納されたオブジェクト
+     *                      }
+     *                      範囲指定のオプションを指定した場合、以下statusが返却される。
+     *                        200 ファイル全体を取得
+     *                        206 ファイルの一部取得
+     *                      headersには以下をヘッダを含む
+     *                        etag : ファイルのETag。
+     *                               値はダブルクオーテーション(")で囲まれている。
+     *                               etag参照時はクオーテーションを削除して使用すること。
+     *                                 headers["etag"].replace(/[¥"]/g, "");
+     *
+     * ・処理が失敗した場合は、error の呼び出しにて通知する。
+     *     error の書式は以下の通りとする。
+     *         error(err)
+     *             err : エラー要因がJSON 形式で返る。
+     *              {
+     *                  "status"        : ステータスコード,
+     *                  "statusText"    : エラーメッセージ,
+     *                  "responseText"  : レスポンスメッセージ,
+     *                  "data"          : 引数で指定されたfileName,
+     *              }
+     *              範囲指定の読み込みでは以下statusのエラーが発生することがある。
+     *              内容に応じて対処を行うこと。
+     *                  412 : ファイルが更新されているためダウンロード失敗
+     *                  416 : 範囲指定不正のためダウンロード失敗
+     * ・optionに {rawRequest:true}を指定した場合、callbacksは指定できない。Promiseを使用すること。
+     * </pre>
+     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     *                   optionに {rawRequest:true} を指定した場合、http.IncomingMessage、またはhttp2.ClientHttp2Streamを返却する。
+     * @since 7.5.0
+     * @example
+     *      // Raw Requestの例
+     *      // for HTTP/1.1
+     *      var bucket = ....;
+     *      ....
+     *      // pipe()を使用する場合
+     *      var writable = fs.createWriteStream(....);
+     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *          .then((message) => {
+     *              message.pipe(writable);
+     *          });
+     *
+     *      // 'data'を実装する場合
+     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *          .then((message) => {
+     *              message.on('data', () => {....});
+     *              message.on('end', () => {....});
+     *              message.on('error', () => {....});
+     *              message.on('close', () => {....});
+     *          });
+     *
+     *      // for HTTP/2
+     *      // 'data'を実装する場合
+     *      var statusCode;
+     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *          .then((message) => {
+     *              message.on('response', (headers, flags) => { statusCode = headers[':status'] });
+     *              message.on('data', () => {....});
+     *              message.on('end', () => {....});
+     *              message.on('error', () => {....});
+     *              message.on('close', () => {....});
+     *          });
+     * @example
+     *      // start,end 指定の例 詳細はRFC7233を参照
+     *      // サーバに1000 byteのファイルが格納されている場合
+     *      // 最初の50byteを取得
+     *      var options = { rangeStart : 0, rangeEnd: 49 };
+     *      // 次の50byteを取得
+     *      options     = { rangeStart : 50, rangeEnd: 99 };
+     *      // 末尾の50byteを取得する(以下指定は等価である)
+     *      options     = { rangeStart : 950 };
+     *      options     = { rangeEnd   : 50 };
+     *      options     = { rangeStart : 950, rangeEnd: 999 };
+     *      // 先頭の1byteを指定
+     *      options     = { rangeStart: 0, rangeEnd: 0 };
+     *      // 末尾の1byteを指定
+     *      options     = { rangeEnd: 1 };
+     *
+     *      options["extraResponse"] = true; // ステータスコードなどを含めて取得
+     *      // APIコール
+     *      var bucket = ....;
+     *      ....
+     *      callbacks = {
+     *          // options["extraResponse"] がtrueでない場合、dataにはファイルデータが設定される
+     *          success: function(data) {
+     *              var status  = data.status;
+     *              var headers = data.headers;
+     *              var body    = data.body;
+     *              ....
+     *          },
+     *          error: function(err) {....}
+     *      };
+     *      bucket.loadWithOptions("MyFile.jpg", options, callbacks);
+     */
+    loadWithOptions(fileName: string, options?: FileRequestOptions, callbacks?: Callbacks): Promise<any> {
+        return this._load(fileName, options, callbacks);
+    }
+
+    _load(fileName: string, options?: FileRequestOptions, callbacks?: Callbacks): Promise<any> {
+        nbLogger("FileBucket._load()");
 
         if (!(typeof fileName !== "undefined" && fileName !== null)) {
-            nbLogger("FileBucket.load(), Parameter is invalid : fileName");
+            nbLogger("FileBucket._load(), Parameter is invalid : fileName");
             throw new Error("No fileName");
         }
 
-        if (!(typeof Blob !== "undefined" && Blob !== null) && !(typeof Buffer !== "undefined" && Buffer !== null)) {
-            nbLogger("FileBucket.load(), Not supported Blob nor Buffer");
-            throw new Error("No Blob/Buffer support");
+        let rawRequest: boolean = false;
+        if (typeof options !== "undefined") {
+            // validate options
+            if (options === null || typeof options !== "object") {
+                // typeof null -> "object"
+                nbLogger("FileBucket._load(), Invalid options: " + options);
+                throw new Error("Invalid options: " + options);
+            }
+
+            if (options["rawRequest"] === true) {
+                if (!(typeof Blob !== "undefined" && Blob !== null) && !(typeof Buffer !== "undefined" && Buffer !== null)) {
+                    nbLogger("FileBucket._load(), Not supported Blob nor Buffer");
+                    throw new Error("No Blob/Buffer support");
+                }
+                rawRequest = true;
+            }
         }
 
         const path = this.getDataPath("/" + encodeURIComponent(fileName));
-        nbLogger("FileBucket.load(), path=" + path);
+        nbLogger("FileBucket._load(), path=" + path);
         const req = new HttpRequest(this._service, path);
         req.setMethod("GET");
 
-        if (typeof Blob !== "undefined" && Blob !== null) {
-            req.setResponseType("blob");
-        } else if (typeof Buffer !== "undefined" && Buffer !== null) {
-            req.setResponseType("buffer");
+        if (rawRequest) {
+            req.rawMessage = true;
+        } else {
+            if (typeof Blob !== "undefined" && Blob !== null) {
+                req.setResponseType("blob");
+            } else if (typeof Buffer !== "undefined" && Buffer !== null) {
+                req.setResponseType("buffer");
+            }
+        }
+
+        if (typeof options !== "undefined") {
+            const receiveResponse = options["extraResponse"];
+            if (receiveResponse === true) {
+                req.setReceiveResponseHeaders(true);
+            }
+            // Range
+            const start = options["rangeStart"];
+            const end = options["rangeEnd"];
+            const range = FileBucket._createRangeValue(start, end);
+            if (range !== undefined) {
+                // Range: bytes=range-value
+                req.addRequestHeader("Range", "bytes=" + range);
+            }
+            // If-Match,If-Range
+            const ifMatch = options["ifMatch"];
+            if (typeof ifMatch !== "undefined") {
+                // If-Match: "ETag"
+                req.addRequestHeader("If-Match", '"' + ifMatch + '"');
+            }
+            const ifRange = options["ifRange"];
+            if (typeof ifRange !== "undefined") {
+                // If-Range: "ETag"
+                req.addRequestHeader("If-Range", '"' + ifRange + '"');
+            }
         }
 
         const promise = req.execute().then(response => {
             return response;
         }, err => {
-            nbLogger(("FileBucket.load(), error: " + (_errorText(err))));
+            nbLogger(("FileBucket._load(), error: " + (_errorText(err))));
             err.data = fileName;
             return Promise.reject(err);
         });
 
         return _promisify(promise, callbacks);
+    }
+
+    /**
+     * @memberOf FileBucket
+     * @description start/end位置からRangeヘッダに指定する値を生成する
+     * @private
+     */
+    static _createRangeValue(start: number, end: number): string {
+        // undefinedは許容
+        if (start !== undefined && (!Number.isInteger(start) || start < 0)) {
+            throw new Error("invalid rangeStart value: " + start);
+        }
+        if (end !== undefined && (!Number.isInteger(end) || end < 0)) {
+            throw new Error("invalid rangeEnd value: " + end);
+        }
+
+        // Rangeの範囲チェックはサーバ側で行う
+        let range: string = undefined;
+        if (start === undefined && end === undefined) {
+            // star,endとも未指定の場合はRangeヘッダを付与しない
+            // 何もしない
+        } else if (start !== undefined && end === undefined) {
+            // startのみ指定
+            range = start + "-";
+        } else if (start === undefined && end !== undefined) {
+            // endのみ指定
+            range = "-" + end;
+        } else {
+            // start,endともに指定
+            range = start + "-" + end;
+        }
+
+        return range;
     }
 
     /**

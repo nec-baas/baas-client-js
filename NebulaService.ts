@@ -1,5 +1,5 @@
 import {_createError, _errorText, _promisify, Callbacks, JsonObject, nbError, nbLogger} from "./Head";
-import {_node_require} from "./NodeSupport";
+import {_node_require, http2} from "./NodeSupport";
 import {Nebula} from "./Nebula";
 import {User, UserJson} from "./User";
 import {Group} from "./Group";
@@ -78,6 +78,8 @@ export class NebulaConfig {
     serviceId: string;
     debugMode = "release";
     clientCertOptions: ClientCertOptions;
+    // for http2 support
+    enableHttp2: boolean = false;
 
     constructor(params: any) {
         this.tenant = params.tenant;
@@ -109,6 +111,9 @@ export class NebulaConfig {
         if (params.debugMode !== undefined) {
             this.debugMode = params.debugMode;
         }
+        if (params.enableHttp2 !== undefined) {
+            this.enableHttp2 = params.enableHttp2;
+        }
     }
 }
 
@@ -124,6 +129,7 @@ export interface NebulaInitParam {
     allowSelfSignedCert?: boolean;
     serviceId?: string;
     debugMode?: string;
+    enableHttp2?: boolean;
 }
 
 /**
@@ -492,6 +498,27 @@ export class NebulaService {
 
     /**
      * @memberOf NebulaService
+     * @description HTTP/2の有効/無効を返却する (Node.js使用時のみ有効)<br>
+     * HTTP/2 を使用する場合は、Node.js v8.4 以上が必要。<br>
+     * @returns {boolean} HTTP/2を使用する場合は trueを返却する。
+     */
+    getHttp2(): boolean {
+        return this._config.enableHttp2;
+    }
+
+    /**
+     * @memberOf NebulaService
+     * @description HTTP2 の有効/無効を指定する。(Node.js使用時のみ有効)<br>
+     * HTTP/2 を使用する場合は、Node.js v8.4 以上が必要。<br>
+     * HTTP/2使用時は、Proxy({@link NebulaService#setHttpProxy}、{@link NebulaService#setHttpsProxy})は無効である。
+     * @param {boolean} enable HTTP/2を使用する場合はtrueを設定する。
+     */
+    setHttp2(enable: boolean): void {
+        this._config.enableHttp2 = enable;
+    }
+
+    /**
+     * @memberOf NebulaService
      * @description MBaaS JavaScript SDK 初期化
      * <p>
      * ・MBaaS JavaScript SDK（以降、SDKと称す）を初期化する。<br>
@@ -508,7 +535,8 @@ export class NebulaService {
      *         "offline"             : false,
      *         "allowSelfSignedCert" : false,
      *         "serviceId"           : "my-service-id",
-     *         "debugMode"           : "debug"
+     *         "debugMode"           : "debug",
+     *         "enableHttp2"         : false
      *     }
      *     (プロパティ名)
      *     tenant      : テナント毎に割り当てられるユニークなID（必須）
@@ -531,6 +559,9 @@ export class NebulaService {
      *                   debug は、コンソール上にデバッグログを出力する。
      *                   release は、クリティカルなエラー以外のコンソール上にデバッグログを出力しない。
      *                   test は、TBD。
+     *     enableHttp2 : HTTP/2使用設定 (オプション)
+     *                   Node.js使用時(v8.4.0以降)のみ有効。
+     *                   通信にHTTP/2を利用する場合はtrueを指定する。(初期値: false)
      * </pre>
      * @return {NebulaService} this
      */
@@ -559,7 +590,8 @@ export class NebulaService {
                     baseUri: this.getBaseUri(),
                     offline: this.isOffline(),
                     allowSelfSignedCert: this.isAllowSelfSignedCert(),
-                    debugMode: this.getDebugMode()
+                    debugMode: this.getDebugMode(),
+                    enableHttp2: this.getHttp2()
                 };
 
                 request.setData(initializeParams);

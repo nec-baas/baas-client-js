@@ -1,5 +1,5 @@
 /*!
- * NEC Mobile Backend Platform JavaScript SDK version 7.0.2
+ * NEC Mobile Backend Platform JavaScript SDK version 7.5.0
  *
  * Copyright (C) 2014-2018, NEC CORPORATION.
  * All rights reserved.

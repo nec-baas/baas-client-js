@@ -2,6 +2,9 @@ import * as _url from "url"; // KEEP
 import * as _http from "http"; // KEEP
 import * as _https from "https"; // KEEP
 import * as _tls from "tls"; // KEEP
+import * as _util from "util"; // KEEP
+// import * as _http2 from "http2"; // KEEP
+
 
 declare var require: any;
 declare var process: any;
@@ -43,11 +46,13 @@ export const URL = _node_require('url');
 export const https = _node_require('https');
 export const http = _node_require('http');
 export const tls = _node_require('tls');
+export const fs = _node_require('fs');
+export const util = _node_require('util');
 
-let _http2 = null;
+let __http2 = null;
 try {
-    _http2 = _node_require('http2'); // Node.js v8.x 以上が必要、experimental
+    __http2 = _node_require('http2'); // Node.js v8.4.x 以上が必要、experimental
 } catch (e) {
     // no http2 module
 }
-export const http2 = _http2;
+export const http2 = __http2;

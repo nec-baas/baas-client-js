@@ -6,6 +6,8 @@ import * as _tls from "tls";
 
 import {Promise} from "es6-promise";
 import {Buffer} from "buffer";
+import {HttpNode} from "./HttpNode";
+import {HttpXhr} from "./HttpXhr";
 
 /**
  * APIリクエストインタフェース。
@@ -63,9 +65,26 @@ export abstract class HttpRequestExecutor {
      * @param {number} timeout
      * @param {string} responseType
      * @param {boolean} receiveResponseHeaders
+     * @param {boolean} useHttp2
      */
     abstract execute(method: string, url: string, headers: Headers, body: any, timeout: number,
-                     responseType: string, receiveResponseHeaders: boolean): void;
+                     responseType: string, receiveResponseHeaders: boolean, useHttp2: boolean): void;
+
+    abstract setReturnRawMessage(rawMessage: boolean): void;
+
+    /**
+     * セッションをcloseする (Node.js 使用時、HTTP/2使用時のみ有効)
+     * @param {string} authority 対象のauthority (例: 'http://example.com:1234' パスやパラメータは含めない)
+     * <p>未指定の場合は、保持する全てのHTTP/2セッションをcloseする。
+     */
+    static closeHttp2Session(authority?: string): void {
+        if (_hasXhr()) {
+            HttpXhr.closeHttp2Session(authority);
+        } else {
+            // close session
+            HttpNode.closeHttp2Session(authority);
+        }
+    }
 
     /**
      * HttpRequestExecutor のファクトリメソッド
@@ -103,14 +122,14 @@ export class HttpRequest implements ApiRequest {
     private _data: any;
     private _sessionToken: string;
     private _timeout: number;
+    private _rawMessage: boolean = false;
+    private _useHttp2: boolean = false;
 
     _resolve: any;
     _reject: any;
 
     private _receiveResponseHeaders: boolean;
     private _responseHeaders: object;
-
-    private _useHttp2: boolean = false;
 
     private static _defaultTimeout = 0;
     static _httpAgent: any;
@@ -172,20 +191,29 @@ export class HttpRequest implements ApiRequest {
     }
 
     /**
+     * @description raw response message を返す場合に true をセットする (Node.js専用)。
+     * <p>true を指定すると、execute 成功時の応答は http.IncomingMessage となる。
+     * <p>HTTP/2を使用する場合、http2.ClientHttp2Streamとなる。
+     * @name HttpRequest#rawMessage
+     * @type {boolean}
+     */
+    get rawMessage(): boolean {
+        return this._rawMessage;
+    }
+    set rawMessage(value: boolean) {
+        this._rawMessage = value;
+    }
+
+    /**
      * @memberOf HttpRequest
-     * @description HTTP2 の使用・不使用状態を返す
-     * @returns {boolean} HTTP2を使用する場合は true
+     * @description HTTP/2 を使用する場合にtrueをセットする。(Node.js専用)。
+     * @name HttpRequest#useHttp2
+     * @type {boolean}
      */
     get useHttp2(): boolean {
         return this._useHttp2;
     }
 
-    /**
-     * @memberOf HttpRequest
-     * @description HTTP2 の使用・不使用を指定する。
-     * HTTP2 を使用する場合は、Node.js v8.x 以上が必要。
-     * @param {boolean} value HTTP2を使用する場合は true
-     */
     set useHttp2(value: boolean) {
         if (value && http2 == null) {
             throw new Error("No http2 support.");
@@ -223,6 +251,7 @@ export class HttpRequest implements ApiRequest {
         this._data = null;
         this._receiveResponseHeaders = false;
         this._timeout = HttpRequest.getDefaultTimeout();
+        this._useHttp2 = this._service.getHttp2();
 
         const _currentObj = this._service.getCurrentUser();
 
@@ -304,11 +333,23 @@ export class HttpRequest implements ApiRequest {
             }
 
             const executor = HttpRequestExecutor.create(this);
+            if (this._rawMessage) {
+                executor.setReturnRawMessage(this._rawMessage);
+            }
+
             executor.execute(this._method, url, this._headers, body, this._timeout,
-                this._responseType, this._receiveResponseHeaders);
+                this._responseType, this._receiveResponseHeaders, this._useHttp2);
         });
     }
 
+    /**
+     * @memberOf HttpRequest
+     * @dscription セッションをcloseする (Node.js 使用時、HTTP/2使用時のみ有効)
+     * @param {string} authority 対象のauthority 未指定の場合は全てのセッションをcloseする
+     */
+    static closeHttp2Session(authority?: string): void {
+        HttpRequestExecutor.closeHttp2Session(authority);
+    }
 
     /**
      * @memberOf HttpRequest

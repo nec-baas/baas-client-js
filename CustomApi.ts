@@ -147,6 +147,59 @@ export class CustomApi {
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     execute(data: object, callbacks?: Callbacks): Promise<string|object> {
+        return this._execute(data, false, callbacks);
+    }
+
+    /**
+     * @memberOf CustomApi
+     * @description
+     *      カスタムAPIの呼び出し(raw message版)。Node.js専用。
+     *      <p>HTTP/1.1において、処理が成功した場合、Promise には http.IncomingMessage が返される。
+     *      <p>http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *      <p>データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
+     *      <p>リクエスト送信が失敗した場合、Promise には error が返される。
+     *      <p>HTTP/2において、処理が成功した場合、Promise には http2.ClientHttp2Stream が返される。
+     *      <p>ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *      <p>HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
+     * @example
+     *      var customApi = ....;
+     *
+     *      // for HTTP/1.1
+     *      // pipe()を使用する場合
+     *      var writable = fs.createWriteStream(....);
+     *      customApi.executeRaw()
+     *          .then((message) => {
+     *              message.pipe(writable);
+     *          });
+     *
+     *      // 'data'を実装する場合
+     *      customApi.executeRaw()
+     *          .then((message) => {
+     *              message.on('data', () => {....});
+     *              message.on('end', () => {....});
+     *              message.on('error', () => {....});
+     *              message.on('close', () => {....});
+     *          });
+     *
+     *      // for HTTP/2
+     *      var statusCode;
+     *      customApi.executeRaw()
+     *          .then((message) => {
+     *              message.on('response', (headers, flags) => { statusCode = headers[':status'] });
+     *              message.on('data', () => {....});
+     *              message.on('end', () => {....});
+     *              message.on('error', () => {....});
+     *              message.on('close', () => {....});
+     *          });
+     * @param {Object} data API呼び出しデータ
+     * @return {Promise} Promise
+     * @since 7.5.0
+     */
+    executeRaw(data: object): Promise<any> {
+        return this._execute(data, true);
+    }
+
+    _execute(data: object, rawMessage: boolean, callbacks?: Callbacks): Promise<any> {
         const request = new HttpRequest(this._service, this.path);
         request.setMethod(this.method);
 
@@ -159,8 +212,12 @@ export class CustomApi {
             }
         }
 
-        if (this.responseType != null) {
-            request.setResponseType(this.responseType);
+        if (!rawMessage) {
+            if (this.responseType != null) {
+                request.setResponseType(this.responseType);
+            }
+        } else {
+            request.rawMessage = true;
         }
 
         if (this.contentType != null) {
