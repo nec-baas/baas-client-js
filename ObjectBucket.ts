@@ -606,7 +606,9 @@ export class ObjectBucket extends BaseBucket {
 
     /**
      * @memberOf ObjectBucket
-     * @description オブジェクトバケットへオブジェクトを保存する.
+     * @description オブジェクトバケットへオブジェクトを保存(upsert)する.
+     * <p>
+     * オブジェクトに "_id" フィールドが含まれる場合は更新、含まれない場合は挿入処理となる。
      * <p>
      * オブジェクトにETag値が含まれる場合、サーバに保存されているオブジェクトのETag値と照合される。
      * 一致しなかった場合は、データ衝突として「409 Conflict」エラーとなり、オブジェクトは更新されない。
@@ -655,9 +657,58 @@ export class ObjectBucket extends BaseBucket {
      */
     save(object: JsonObject, callbacks?: Callbacks): Promise<JsonObject> {
         nbLogger("ObjectBucket.save()");
+        return this._save(object, !object._id, callbacks);
+    }
 
+    /**
+     * @memberOf ObjectBucket
+     * @description オブジェクトバケットへオブジェクトを保存(insert)する.
+     * <p>
+     * ETag値は、オブジェクトを新規保存した場合にサーバで追加され、
+     * オブジェクトを更新する度にサーバで変更される固有値である。
+     * ETag値は、オブジェクトの "etag"プロパティに格納される。
+     * @example
+     * var bucket = ....;
+     * ....
+     * var myObj = {....};
+     * ....
+     * bucket.insert(myObj)
+     *     .then(function(object) {...})
+     *     .catch(function(err) {...});
+     * @param {Object} object 保存するオブジェクト
+     * @param {Callbacks} callbacks コールバック (Option)
+     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 保存に成功したオブジェクト(JSON)。
+     * <br>新規オブジェクトの場合は、以下のフィールドが追加される。
+     * <ul>
+     *      <li>_id : オブジェクトID
+     *      <li>createdAt : 作成日時
+     *      <li>updatedAt : 更新日時
+     *      <li>ACL : このオブジェクトのACL。指定しなかった場合は追加される
+     * </ul>
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 保存に失敗したオブジェクト
+     *     }
+     * </pre>
+     * </ul>
+     * @see #save
+     * @since 7.5.1
+     */
+    insert(object: JsonObject, callbacks?: Callbacks): Promise<JsonObject> {
+        nbLogger("ObjectBucket.insert()");
+        return this._save(object, true, callbacks);
+    }
+
+    _save(object: JsonObject, isNew: boolean, callbacks?: Callbacks): Promise<JsonObject> {
         if (!object) {
-            nbError("ObjectBucket.save(), Parameter is invalid");
+            nbError("ObjectBucket.save/insert, Parameter is invalid");
             throw new Error("No object");
         }
 
@@ -674,7 +725,7 @@ export class ObjectBucket extends BaseBucket {
             const queryParams: QueryParams = {};
             let path: string, method: string;
 
-            if (object._id != null) {
+            if (!isNew) {
                 path = this.getDataPath("/" + object._id);
                 method = "PUT";
 
