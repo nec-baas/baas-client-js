@@ -189,15 +189,15 @@ export class Acl {
      * @description
      *      対象権限にユーザIDまたはグループ名を追加する
      * @example
-     *      var acl = new Nebula.Acl();
-     *      var user = new Nebula.User();
-     *      var group = new Group("MyGroup");
-     *      ....
-     *      acl.addEntry(Nebula.Acl.READ, user);
-     *      acl.addEntry(Nebula.Acl.WRITE, "USER_01");
-     *      acl.addEntry(Nebula.Acl.CREATE, group);
-     *      acl.addEntry(Nebula.Acl.UPDATE, "g:GROUP_A");
-     *      acl.addEntry(Nebula.Acl.DELETE, Nebula.Acl.AUTHENTICATED);
+     * var acl = new Nebula.Acl();
+     * var user = new Nebula.User();
+     * var group = new Group("MyGroup");
+     * ....
+     * acl.addEntry(Nebula.Acl.READ, user);
+     * acl.addEntry(Nebula.Acl.WRITE, "USER_01");
+     * acl.addEntry(Nebula.Acl.CREATE, group);
+     * acl.addEntry(Nebula.Acl.UPDATE, "g:GROUP_A");
+     * acl.addEntry(Nebula.Acl.DELETE, Nebula.Acl.AUTHENTICATED);
      * @param {String} permission エントリを追加する対象権限
      *      <br />以下のいずれかの値を指定する。
      *      <ul>
@@ -268,15 +268,15 @@ export class Acl {
      * @description
      *      対象権限からにユーザIDまたはグループ名を削除する
      * @example
-     *      var acl = new Nebula.Acl();
-     *      var user = new Nebula.User();
-     *      var group = new Group("MyGroup");
-     *      ....
-     *      acl.removeEntry(Nebula.Acl.READ, user);
-     *      acl.removeEntry(Nebula.Acl.WRITE, "USER_01");
-     *      acl.removeEntry(Nebula.Acl.CREATE, group);
-     *      acl.removeEntry(Nebula.Acl.UPDATE, "g:GROUP_A");
-     *      acl.removeEntry(Nebula.Acl.DELETE, Nebula.Acl.AUTHENTICATED);
+     * var acl = new Nebula.Acl();
+     * var user = new Nebula.User();
+     * var group = new Group("MyGroup");
+     * ....
+     * acl.removeEntry(Nebula.Acl.READ, user);
+     * acl.removeEntry(Nebula.Acl.WRITE, "USER_01");
+     * acl.removeEntry(Nebula.Acl.CREATE, group);
+     * acl.removeEntry(Nebula.Acl.UPDATE, "g:GROUP_A");
+     * acl.removeEntry(Nebula.Acl.DELETE, Nebula.Acl.AUTHENTICATED);
      * @param {String} permission エントリを削除する対象権限
      *      <br />以下のいずれかの値を指定する。
      *      <ul>
@@ -350,9 +350,9 @@ export class Acl {
      * @description
      *      所有者のユーザIDを取得する
      * @example
-     *      var acl = ....;
-     *      ....
-     *      var userId = acl.getOwner();
+     * var acl = ....;
+     * ....
+     * var userId = acl.getOwner();
      * @return
      *      {String} ユーザIDの文字列を返す。所有者がない場合は、null を返す。
      */
@@ -370,13 +370,13 @@ export class Acl {
      * @description
      *      対象権限のユーザIDおよびグループ名のエントリ一覧を取得する
      * @example
-     *      var acl = ....;
+     * var acl = ....;
      *
-     *      var entries = acl.getEntries(permission);
-     *      for (var i = 0; i < entries.length; i++) {
-     *          entry = entries[i];
-     *          ....;
-     *      }
+     * var entries = acl.getEntries(permission);
+     * for (var i = 0; i < entries.length; i++) {
+     *     entry = entries[i];
+     *     ....;
+     * }
      * @param {String} permission 取得するエントリ一覧の対象権限
      *      <br />以下のいずれかの値を指定する。
      *      <ul>

@@ -52,7 +52,7 @@ export class FileBucket extends BaseBucket {
      * @classdesc ファイルバケット
      * @description FileBucket インスタンスを生成する
      * @example
-     *     var bucket = new Nebula.FileBucket("bucket1");
+     * var bucket = new Nebula.FileBucket("bucket1");
      * @param name バケット名
      */
     constructor(name: string, service: NebulaService = Nebula) {
@@ -65,30 +65,25 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットを取得する
      * @example
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(err) {....}
-     *      };
-     *      Nebula.FileBucket.loadBucket(callbacks);
+     * Nebula.FileBucket.loadBucket()
+     *     .then(function(bucket) {....})
+     *     .catch(function(err) {....});
      * @param {String} name ファイルバケット名
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.FileBucketインスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : ファイルバケット名(nameに同じ)
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルバケット(Nebula.FileBucket) インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : ファイルバケット名(nameに同じ)
+     *   }
+     * </pre>
+     * </ul>
      */
     static loadBucket(name:string , callbacks?: Callbacks): Promise<FileBucket> { return null; }
 
@@ -102,19 +97,16 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットのバケット名一覧を取得する
      * @example
-     *      callbacks = {
-     *          success: function(bucketList) {....},
-     *          error: function(error) {....}
-     *      };
-     *      Nebula.FileBucket.getBucketList(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucketList)
-     *             bucketList : ファイルバケット名の配列
-     * </pre>
+     * Nebula.FileBucket.getBucketList()
+     *     .then(function(bucketList) {....})
+     *     .catch(function(error) {....});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルバケット名の配列
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static getBucketList(callbacks?: Callbacks): Promise<string[]> { return null; }
 
@@ -127,31 +119,26 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットを保存する
      * @example
-     *      var bucket = new Nebula.FileBucket("Person");
-     *      ....
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.saveBucket(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.FileBucket インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *                  "data"          : Nebula.FileBucket インスタンス
-     *              }
-     * </pre>
+     * var bucket = new Nebula.FileBucket("Person");
+     * ....
+     * bucket.saveBucket()
+     *     .then(function(bucket) {....})
+     *     .catch(function(error) {....});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルバケット (Nebula.FileBucket) インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ
+     *       "data"          : Nebula.FileBucket インスタンス
+     *   }
+     * </pre>
+     * </ul>
      */
     saveBucket(callbacks?: Callbacks): Promise<FileBucket> {
         return super.saveBucket(callbacks) as Promise<FileBucket>;
@@ -162,31 +149,28 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットを削除する
      * @example
-     *      var bucket = new Nebula.FileBucket("Person");
-     *      ....
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.deleteBucket(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.FileBucket インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : Nebula.FileBucket インスタンス
-     *              }
-     * </pre>
+     * var bucket = new Nebula.FileBucket("Person");
+     * ....
+     * callbacks = {
+     *     success: function(bucket) {....},
+     *     error: function(err) {....}
+     * };
+     * bucket.deleteBucket(callbacks);
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルバケット (Nebula.FileBucket) インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ
+     *       "data"          : Nebula.FileBucket インスタンス
+     *   }
+     * </pre>
+     * </ul>
      */
     deleteBucket(callbacks?: Callbacks): Promise<FileBucket> {
         return super.deleteBucket(callbacks) as Promise<FileBucket>;
@@ -199,12 +183,12 @@ export class FileBucket extends BaseBucket {
      *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
      *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      var acl = new Nebula.Acl();
-     *      ....
-     *      acl.addEntry(....);
-     *      ....
-     *      bucket.setAcl(acl);
+     * var bucket = ....;
+     * var acl = new Nebula.Acl();
+     * ....
+     * acl.addEntry(....);
+     * ....
+     * bucket.setAcl(acl);
      * @param acl {Acl} Aclインスタンス
      * @return {FileBucket} this
      */
@@ -219,9 +203,9 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットのACLを取得する.
      *      <p>ファイルバケットのACLを取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var acl = bucket.getAcl();
+     * var bucket = ....;
+     * ....
+     * var acl = bucket.getAcl();
      * @return
      *      {Acl} ファイルバケットのACL
      */
@@ -236,12 +220,12 @@ export class FileBucket extends BaseBucket {
      *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
      *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      var acl = new Nebula.Acl();
-     *      ....
-     *      acl.addEntry(....);
-     *      ....
-     *      bucket.setContentAcl(acl);
+     * var bucket = ....;
+     * var acl = new Nebula.Acl();
+     * ....
+     * acl.addEntry(....);
+     * ....
+     * bucket.setContentAcl(acl);
      * @param {Acl} acl Nebula.ACL のインスタンス
      * @return {FileBucket} this
      */
@@ -256,9 +240,9 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットのコンテンツACLを取得する.
      *      <p>ファイルバケットのコンテンツACLを取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var acl = bucket.getAcl();
+     * var bucket = ....;
+     * ....
+     * var acl = bucket.getAcl();
      * @return
      *      {Acl} ファイルバケットのコンテンツACL
      */
@@ -273,12 +257,12 @@ export class FileBucket extends BaseBucket {
      *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
      *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      var acl = new Nebula.Acl();
-     *      ....
-     *      acl.addEntry(....);
-     *      ....
-     *      bucket.setDescription("このバケットの説明文”);
+     * var bucket = ....;
+     * var acl = new Nebula.Acl();
+     * ....
+     * acl.addEntry(....);
+     * ....
+     * bucket.setDescription("このバケットの説明文”);
      * @param {String} description 設定する「説明文」
      * @return {FileBucket} this
      */
@@ -293,9 +277,9 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットの「説明文」を取得する.
      *      <p>ファイルバケットのコンテンツACLを取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var description = bucket.getDescription();
+     * var bucket = ....;
+     * ....
+     * var description = bucket.getDescription();
      * @return
      *      {String} ファイルバケットの「説明文」
      */
@@ -308,9 +292,9 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケット名を取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var bucketName = bucket.getBucketName();
+     * var bucket = ....;
+     * ....
+     * var bucketName = bucket.getBucketName();
      * @return
      *      {String} ファイルバケット名
      */
@@ -410,48 +394,43 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットへファイルを新規保存する.
      *      <p>HTML5 File APIに対応しているブラウザ、もしくは Node.js のみで実行可能。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var file = ....;
-     *      ....
-     *      var meta = new Nebula.FileMetadata();
-     *      meta.setContentType("image/jpeg");
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.saveAs("MyFileName.jpg", file, meta, callbacks);
+     * var bucket = ....;
+     * ....
+     * var file = ....;
+     * ....
+     * var meta = new Nebula.FileMetadata();
+     * meta.setContentType("image/jpeg");
+     * bucket.saveAs("MyFileName.jpg", file, meta)
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットへ保存するファイル名
-     * @param {Object} data 文字列、File/Blobオブジェクト、または Buffer オブジェクト
-     * <pre>
-     * サーバに保存するファイルのデータを以下のいずれかで指定する。
-     * ・保存するファイルにバインドされたFileオブジェクト
-     * ・保存するファイルのデータ。文字列/Blobオブジェクト/Bufferオブジェクトのいずれか。
-     * </pre>
+     * @param {Object} data 文字列、File/Blobオブジェクト、または Buffer オブジェクト。
+     * <p>サーバに保存するファイルのデータを以下のいずれかで指定する。
+     * <ul>
+     *   <li>保存するファイルにバインドされたFileオブジェクト
+     *   <li>保存するファイルのデータ。文字列/Blobオブジェクト/Bufferオブジェクトのいずれか。
+     * </ul>
      * @param {FileMetadata} metadata 保存するファイルのメタデータ
-     * <pre>
-     * 指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
-     * ・ACL (オプション、省略可)
-     * ・コンテンツタイプ (必須、省略不可)
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : Nebula.FileMetadata インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * <p>指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
+     * <ul>
+     *   <li>ACL (オプション、省略可)
+     *   <li>コンテンツタイプ (必須、省略不可)
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.FileMetadata インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     saveAs(fileName: string, data: any, metadata: FileMetadata, callbacks?: Callbacks): Promise<FileMetadata> {
         return this._save(fileName, data, metadata, false, callbacks);
@@ -464,40 +443,35 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットのファイルを保存する.
      *      <p>HTML5 File APIに対応しているブラウザ、または Node.js のみで実行可能。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var file = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.save("MyFileName.jpg", file, callbacks);
+     * var bucket = ....;
+     * ....
+     * var file = ....;
+     * ....
+     * bucket.save("MyFileName.jpg", file)
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットへ保存するファイル名
      * @param {Object} data 文字列、File/Blobオブジェクト、または Buffer オブジェクト
-     * <pre>
-     * サーバに保存するファイルのデータを以下のいずれかで指定する。
-     * ・保存するファイルにバインドされたFileオブジェクト
-     * ・保存するファイルのデータ。文字列/Blobオブジェクト/Bufferオブジェクトのいずれか。
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : Nebula.FileMetadata インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * <p>サーバに保存するファイルのデータを以下のいずれかで指定する。
+     * <ul>
+     *   <li>保存するファイルにバインドされたFileオブジェクト
+     *   <li>保存するファイルのデータ。文字列/Blobオブジェクト/Bufferオブジェクトのいずれか。
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.FileMetadata インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     save(fileName: string, data: any, callbacks?: Callbacks): Promise<FileMetadata> {
         return this._save(fileName, data, null, true, callbacks);
@@ -509,32 +483,27 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットからファイルを読み込む.
      *      <p>HTML5 File APIに対応しているブラウザ、または Node.js のみで実行可能。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(blob) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.load("MyFile.jpg", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.load("MyFile.jpg")
+     *     .then(function(blob) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットから読み込むファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(data)
-     *             data : ファイルの内容が格納されたBlobオブジェクト (node.js の場合は Buffer オブジェクト)
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルの内容が格納されたBlobオブジェクト (node.js の場合は Buffer オブジェクト)
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     load(fileName: string, callbacks?: Callbacks): Promise<any> {
         return this._load(fileName, undefined, callbacks);
@@ -546,148 +515,170 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットからオプションを指定してファイルを読み込む.
      *      <p>Node.js のみで実行可能。
      * @param {String} fileName ファイルバケットから読み込むファイルの名前
-     * @param {Object} options   ファイル取得のパラメータ(オプション)
-     * <pre>
-     *  {
-     *      "rawRequest" : ファイルをRaw messageとして読み込む場合にtrueを設定する。(オプション)
-     *                     trueの場合、extraResponseは無効となる。原則として応答の取得にはPromiseを使用すること。
-     *                     HTTP/1.1において、処理が成功した場合、Promise には http.IncomingMessage が返される。
-     *                     http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
-     *                     データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
-     *                     リクエスト送信が失敗した場合、Promise には error が返される。
-     *                     HTTP/2において、処理が成功した場合、Promise には http2.ClientHttp2Stream が返される。
-     *                     ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
-     *                     HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
-     *                     具体的な指定方法はexamplesを参照。
-     *      "extraResponse" : レスポンスにステータスコード、ヘッダを追加する。(オプション)
-     *                        通常レスポンスにはBuffer オブジェクトを返却するが、
-     *                        extraResponseをtrueに設定した場合、以下の形式で返却を行う。
-     *                          {
-     *                            status  : ステータスコード,
-     *                            headers : レスポンスヘッダ情報を含むオブジェクト,
-     *                            body    : ファイルデータが格納されたBufferオブジェクト
-     *                          }
-     *      "ifMatch" : If-Matchヘッダを付与する場合に指定(オプション)
-     *                  値はファイルのETagを使用する。
-     *                  サーバのファイルが更新されている場合、エラーを返却する。
-     *      "ifRange" : If-Rangeヘッダを付与する場合に指定 (オプション)
-     *                  値はファイルのETagを使用する。
-     *                  rangeStart/rangeEndを指定しない場合は無効である。
-     *                  ETag不一致の場合、rangeStart/rangeEndをは参照せず更新済みの新しいファイルを取得する。
-     *                  ifMatchを優先して評価する。ファイルが更新されている場合でもファイル取得を行うには、ifRangeのみを指定すること。
-     *      "rangeStart : 取得するファイルの開始位置(オプション)
-     *      "rangeEnd"  : ファイルの終了位置(オプション)
-     *                    rangeStartと組み合わせて、"0〜(ファイルサイズ-1)"の範囲で指定を行う。
-     *                    rangeEndのみ指定した場合は、末尾の取得バイト数を表す。
-     *                    rangeStart/rangeEndの値をベースにRangeヘッダを付与する。
-     *                    不正な範囲の場合、サーバでファイルのサイズに合わせて値を変更する場合がある。
-     *                    メタデータからファイルサイズを検証し、ifMatch、ifRangeと組み合わせて使用することを推奨する。
-     *                    具体的な指定方法はexamplesを参照。
-     *  }
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック(オプション)
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(data)
-     *             data : - ファイルのBufferオブジェクト
-     *                    - ファイルデータを含むオブジェクト(optionに {extraResponse:true} を指定した場合)
-     *                      {
-     *                        status : ステータスコード,
-     *                        headers : レスポンスヘッダ情報を含むオブジェクト,
-     *                        body : ファイルデータが格納されたオブジェクト
-     *                      }
-     *                      範囲指定のオプションを指定した場合、以下statusが返却される。
-     *                        200 ファイル全体を取得
-     *                        206 ファイルの一部取得
-     *                      headersには以下をヘッダを含む
-     *                        etag : ファイルのETag。
-     *                               値はダブルクオーテーション(")で囲まれている。
-     *                               etag参照時はクオーテーションを削除して使用すること。
-     *                                 headers["etag"].replace(/[¥"]/g, "");
+     * @param {Object} options   ファイル取得のパラメータ(オプション)。
+     * <p>JSONで指定する。各フィールドの説明は以下の通り。
+     * <ul>
+     *  <li>"rawRequest"
+     *      <p>ファイルをRaw messageとして読み込む場合にtrueを設定する。(オプション)
+     *                 <p>trueの場合、extraResponseは無効となる。原則として応答の取得にはPromiseを使用すること。
      *
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName,
-     *              }
-     *              範囲指定の読み込みでは以下statusのエラーが発生することがある。
-     *              内容に応じて対処を行うこと。
-     *                  412 : ファイルが更新されているためダウンロード失敗
-     *                  416 : 範囲指定不正のためダウンロード失敗
-     * ・optionに {rawRequest:true}を指定した場合、callbacksは指定できない。Promiseを使用すること。
-     * </pre>
+     *                 <p>HTTP/1.1において、処理が成功した場合、Promise には http.IncomingMessage が返される。
+     *                 http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *                 データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
+     *
+     *                 <p>リクエスト送信が失敗した場合、Promise には error が返される。
+     *
+     *                 <p>HTTP/2において、処理が成功した場合、Promise には http2.ClientHttp2Stream が返される。
+     *                 ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *                 HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
+     *                 具体的な指定方法はexamplesを参照。
+     *
+     *  <li>"extraResponse"
+     *      <p>レスポンスにステータスコード、ヘッダを追加する。(オプション)</p>
+     *      <p>通常レスポンスにはBuffer オブジェクトを返却するが、
+     *      extraResponseをtrueに設定した場合、以下のプロパティが設定されたJSONを返却する。</p>
+     *      <ul>
+     *          <li>status  : ステータスコード,
+     *          <li>headers : レスポンスヘッダ情報を含むオブジェクト,
+     *          <li>body    : ファイルデータが格納されたBufferオブジェクト
+     *      </ul>
+     *  </li>
+     *
+     *  <li>"ifMatch"
+     *      <p>If-Matchヘッダを付与する場合に指定(オプション)
+     *              <p>値はファイルのETagを使用する。
+     *              サーバのファイルが更新されている場合、エラーを返却する。
+     *
+     *  <li>"ifRange"
+     *      <p>If-Rangeヘッダを付与する場合に指定 (オプション)
+     *      <p>値はファイルのETagを使用する。
+     *      rangeStart/rangeEndを指定しない場合は無効である。
+     *      <p>ETag不一致の場合、rangeStart/rangeEndをは参照せず更新済みの新しいファイルを取得する。
+     *      <p>ifRange より ifMatchを優先して評価する。ファイルが更新されている場合でもファイル取得を行うには、ifRangeのみを指定すること。
+     *
+     *  <li>"rangeStart
+     *      <p>取得するファイルの開始位置(オプション)
+     *
+     *  <li>"rangeEnd"
+     *      <p>ファイルの終了位置(オプション)
+     *      <p>rangeStartと組み合わせて、"0〜(ファイルサイズ-1)"の範囲で指定を行う。
+     *      <p>rangeEndのみ指定した場合は、末尾の取得バイト数を表す。
+     *      rangeStart/rangeEndの値をベースにRangeヘッダを付与する。
+     *      <p>不正な範囲の場合、サーバでファイルのサイズに合わせて値を変更する場合がある。
+     *      メタデータからファイルサイズを検証し、ifMatch、ifRangeと組み合わせて使用することを推奨する。
+     *      具体的な指定方法はexamplesを参照。
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
+     * <ul>
+     * <li>optionに {rawRequest:true}を指定した場合、callbacksは指定できない。Promiseを使用すること。
+     * </ul>
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
-     *                   optionに {rawRequest:true} を指定した場合、http.IncomingMessage、またはhttp2.ClientHttp2Streamを返却する。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: option の extraResponse, rawRequest 指定により、渡される値が異なる。
+     *     <ul>
+     *     <li>a) ファイルのBufferオブジェクト (option の extraResponse, rawRequest を指定しない場合)</li>
+     *
+     *     <li>b) ファイルデータを含む JSON オブジェクト (optionに {extraResponse:true} を指定した場合)
+     *     <pre>
+     *       {
+     *           status : ステータスコード,
+     *           headers : レスポンスヘッダ情報を含むオブジェクト,
+     *           body : ファイルデータが格納されたオブジェクト
+     *       }
+     *
+     *       範囲囲指定のオプションを指定した場合、以下statusが返却される。
+     *         ・200 ファイル全体を取得
+     *         ・206 ファイルの一部取得
+     *
+     *       headersには以下をヘッダを含む。
+     *         ・etag : ファイルのETag。
+     *           値はダブルクオーテーション(")で囲まれている。
+     *           etag参照時はクオーテーションを削除して使用すること。
+     *             例) headers["etag"].replace(/[¥"]/g, "");
+     *     </pre>
+     *     </li>
+     *     <li>c) http.IncomingMessage または http2.ClientHttpStream (option に {rawRequest: true} を指定した場合)</li>
+     *     </ul>
+     * </li>
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 引数で指定されたfileName,
+     *     }
+     *     範囲指定の読み込みでは以下statusのエラーが発生することがある。
+     *     内容に応じて対処を行うこと。
+     *         412 : ファイルが更新されているためダウンロード失敗
+     *         416 : 範囲指定不正のためダウンロード失敗
+     * </pre></li>
+     * </ul>
      * @since 7.5.0
      * @example
-     *      // Raw Requestの例
-     *      // for HTTP/1.1
-     *      var bucket = ....;
-     *      ....
-     *      // pipe()を使用する場合
-     *      var writable = fs.createWriteStream(....);
-     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
-     *          .then((message) => {
-     *              message.pipe(writable);
-     *          });
+     * // Raw Requestの例
+     * // for HTTP/1.1
+     * var bucket = ....;
+     * ....
+     * // pipe()を使用する場合
+     * var writable = fs.createWriteStream(....);
+     * bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *     .then((message) => {
+     *         message.pipe(writable);
+     *     });
      *
-     *      // 'data'を実装する場合
-     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
-     *          .then((message) => {
-     *              message.on('data', () => {....});
-     *              message.on('end', () => {....});
-     *              message.on('error', () => {....});
-     *              message.on('close', () => {....});
-     *          });
+     * // 'data'を実装する場合
+     * bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *     .then((message) => {
+     *         message.on('data', () => {....});
+     *         message.on('end', () => {....});
+     *         message.on('error', () => {....});
+     *         message.on('close', () => {....});
+     *     });
      *
-     *      // for HTTP/2
-     *      // 'data'を実装する場合
-     *      var statusCode;
-     *      bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
-     *          .then((message) => {
-     *              message.on('response', (headers, flags) => { statusCode = headers[':status'] });
-     *              message.on('data', () => {....});
-     *              message.on('end', () => {....});
-     *              message.on('error', () => {....});
-     *              message.on('close', () => {....});
-     *          });
+     * // for HTTP/2
+     * // 'data'を実装する場合
+     * var statusCode;
+     * bucket.loadWithOptions("MyFile.jpg", {rawRequest: true})
+     *     .then((message) => {
+     *         message.on('response', (headers, flags) => { statusCode = headers[':status'] });
+     *         message.on('data', () => {....});
+     *         message.on('end', () => {....});
+     *         message.on('error', () => {....});
+     *         message.on('close', () => {....});
+     *     });
      * @example
-     *      // start,end 指定の例 詳細はRFC7233を参照
-     *      // サーバに1000 byteのファイルが格納されている場合
-     *      // 最初の50byteを取得
-     *      var options = { rangeStart : 0, rangeEnd: 49 };
-     *      // 次の50byteを取得
-     *      options     = { rangeStart : 50, rangeEnd: 99 };
-     *      // 末尾の50byteを取得する(以下指定は等価である)
-     *      options     = { rangeStart : 950 };
-     *      options     = { rangeEnd   : 50 };
-     *      options     = { rangeStart : 950, rangeEnd: 999 };
-     *      // 先頭の1byteを指定
-     *      options     = { rangeStart: 0, rangeEnd: 0 };
-     *      // 末尾の1byteを指定
-     *      options     = { rangeEnd: 1 };
+     * // start,end 指定の例 詳細はRFC7233を参照
+     * // サーバに1000 byteのファイルが格納されている場合
+     * // 最初の50byteを取得
+     * var options = { rangeStart : 0, rangeEnd: 49 };
+     * // 次の50byteを取得
+     * options     = { rangeStart : 50, rangeEnd: 99 };
+     * // 末尾の50byteを取得する(以下指定は等価である)
+     * options     = { rangeStart : 950 };
+     * options     = { rangeEnd   : 50 };
+     * options     = { rangeStart : 950, rangeEnd: 999 };
+     * // 先頭の1byteを指定
+     * options     = { rangeStart: 0, rangeEnd: 0 };
+     * // 末尾の1byteを指定
+     * options     = { rangeEnd: 1 };
      *
-     *      options["extraResponse"] = true; // ステータスコードなどを含めて取得
-     *      // APIコール
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          // options["extraResponse"] がtrueでない場合、dataにはファイルデータが設定される
-     *          success: function(data) {
-     *              var status  = data.status;
-     *              var headers = data.headers;
-     *              var body    = data.body;
-     *              ....
-     *          },
-     *          error: function(err) {....}
-     *      };
-     *      bucket.loadWithOptions("MyFile.jpg", options, callbacks);
+     * options["extraResponse"] = true; // ステータスコードなどを含めて取得
+     * // APIコール
+     * var bucket = ....;
+     * ....
+     * callbacks = {
+     *     // options["extraResponse"] がtrueでない場合、dataにはファイルデータが設定される
+     *     success: function(data) {
+     *         var status  = data.status;
+     *         var headers = data.headers;
+     *         var body    = data.body;
+     *         ....
+     *     },
+     *     error: function(err) {....}
+     * };
+     * bucket.loadWithOptions("MyFile.jpg", options, callbacks);
      */
     loadWithOptions(fileName: string, options?: FileRequestOptions, callbacks?: Callbacks): Promise<any> {
         return this._load(fileName, options, callbacks);
@@ -809,39 +800,34 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットからファイルを削除する.
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(fileName) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.remove("fileName", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.remove("fileName")
+     *     .then(function(fileName) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットから削除するファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(fileName)
-     *             fileName : 引数で指定されたfileNameと同じ
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイル名(引数で指定されたfileNameと同じ)
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 引数で指定されたfileName
+     *     }
+     * </pre>
+     * </ul>
      * @since v4.0.1
      */
     remove(fileName: string, callbacks?: Callbacks): Promise<string> {
-        nbLogger("FileBucket.delete()");
+        nbLogger("FileBucket.remove()");
 
         if (!(typeof fileName !== "undefined" && fileName !== null)) {
-            nbLogger("FileBucket.delete(), Parameter is invalid : fileName");
+            nbLogger("FileBucket.remove(), Parameter is invalid : fileName");
             throw new Error("No fileName");
         }
 
@@ -855,16 +841,16 @@ export class FileBucket extends BaseBucket {
             req.setData(body);
         } else {
             const path = this.getDataPath("/" + encodeURIComponent(fileName));
-            nbLogger("FileBucket.delete(), path=" + path);
+            nbLogger("FileBucket.remove(), path=" + path);
             req = new HttpRequest(this._service, path);
             req.setMethod("DELETE");
         }
 
         const promise = req.execute().then(response => {
-            nbLogger("FileBucket.delete(), success: " + fileName);
+            nbLogger("FileBucket.remove(), success: " + fileName);
             return fileName;
         }, err => {
-            nbLogger(("FileBucket.delete(), error: " + (_errorText(err)) + " : " + (fileName)));
+            nbLogger(("FileBucket.remove(), error: " + (_errorText(err)) + " : " + (fileName)));
             err.data = fileName;
             return Promise.reject(err);
         });
@@ -876,8 +862,7 @@ export class FileBucket extends BaseBucket {
      * @memberOf FileBucket
      * @description
      *      ファイルバケットからファイルを削除する(Deprecated)
-     * @example
-     * ・本APIは Deprecated である。remove() を使用すること。
+     * <p>本APIは Deprecated である。remove() を使用すること。
      * @deprecated since v4.0.1
      */
     delete(fileName: string, callbacks?: Callbacks): Promise<string> {
@@ -953,32 +938,27 @@ export class FileBucket extends BaseBucket {
      *      ファイルバケットのファイルを公開する.
      *      <p>既に公開されたファイルを再公開しても公開 URL は変更されない。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.publish("MyFile.jpg", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.publish("MyFile.jpg")
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName 公開するファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : このファイルのメタデータ
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: このファイルのメタデータ
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *    {
+     *        "status"        : ステータスコード,
+     *        "statusText"    : エラーメッセージ,
+     *        "responseText"  : レスポンスメッセージ,
+     *        "data"          : 引数で指定されたfileName
+     *    }
+     * </pre>
+     * </ul>
      */
     publish(fileName: string, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.publish()");
@@ -990,32 +970,26 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットのファイルを非公開する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.unpublish("MyFile.jpg", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.unpublish("MyFile.jpg", callbacks)
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName 非公開にするファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : このファイルのメタデータ
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: このファイルのメタデータ
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }</pre>
+     * </ul>
      */
     unpublish(fileName: string, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.unpublish()");
@@ -1083,21 +1057,18 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットからファイル一覧を取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.getList(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : ファイルのメタデータ(Nebula.FileMetadataインスタンス)の配列
-     * </pre>
+     * var bucket = ....;
+     * ....
+     * bucket.getList()
+     *     .then(function(metadataList) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルのメタデータ(Nebula.FileMetadataインスタンス)の配列
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getList(callbacks?: Callbacks): Promise<FileMetadata[]> {
         nbLogger("FileBucket.getList()");
@@ -1109,21 +1080,18 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットから公開ファイル一覧を取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.getPublishedList(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : ファイルのメタデータ(Nebula.FileMetadataインスタンス)の配列
-     * </pre>
+     * var bucket = ....;
+     * ....
+     * bucket.getPublishedList()
+     *     .then(function(metadataList) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルのメタデータ(Nebula.FileMetadataインスタンス)の配列
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getPublishedList(callbacks?: Callbacks): Promise<FileMetadata[]> {
         nbLogger("FileBucket.getPublishedList()");
@@ -1135,32 +1103,26 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットから指定されたファイルのメタデータを取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.getMetadata("MyFile.jpg", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.getMetadata("MyFile.jpg")
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName メタデータを取得するファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : ファイルのメタデータ(Nebula.FileMetadataインスタンス)
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルのメタデータ(Nebula.FileMetadataインスタンス)
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }</pre>
+     * </ul>
      */
     getMetadata(fileName: string, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.getMetadata(), fileName=" + fileName);
@@ -1212,35 +1174,30 @@ export class FileBucket extends BaseBucket {
      * @description
      *      ファイルバケットの指定されたファイルのメタデータを更新する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var meta = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(metadata) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.updateMetadata("MyFile.jpg", meta, callbacks);
+     * var bucket = ....;
+     * ....
+     * var meta = ....;
+     * ....
+     * bucket.updateMetadata("MyFile.jpg", meta)
+     *     .then(function(metadata) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName メタデータを更新するファイルの名前
      * @param {FileMetadata} metadata 更新メタデータ
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : ファイルのメタデータ(Nebula.FileMetadataインスタンス)
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ファイルのメタデータ(Nebula.FileMetadataインスタンス)
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     updateMetadata(fileName: string, metadata: FileMetadata, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.updateMetadata(), fileName=" + fileName);
@@ -1328,23 +1285,23 @@ export class FileBucket extends BaseBucket {
      *      アップロードするファイルを選択する(SDE4SD).
      *      <p>本APIはオフライン(SDE4SD)のみで利用可能
      * @example
-     *      var callbacks = {
-     *          success: function(fileInfo) {....},
-     *          error: function(err) {....}
-     *      };
-     *      Nebula.FileBucket.selectUploadFile(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(fileInfo)
-     *             fileInfo : 選択したファイル情報(以下のJSON形式)
-     *                          { "path" : "ファイルのパス情報",
-     *                            "name" : "ファイル名",
-     *                            "type" : "コンテンツタイプ" }
-     *                          ※ コンテンツタイプを特定できない場合は空白
-     * </pre>
+     * Nebula.FileBucket.selectUploadFile()
+     *     .then(function(fileInfo) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 選択したファイル情報(以下のJSON形式)
+     * <pre>
+     * {
+     *     "path" : "ファイルのパス情報",
+     *     "name" : "ファイル名",
+     *     "type" : "コンテンツタイプ"  // ※ コンテンツタイプを特定できない場合は空白
+     * }
+     * </pre>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static selectUploadFile(callbacks?: Callbacks): Promise<FileInfo> { return null; }
 
@@ -1378,19 +1335,16 @@ export class FileBucket extends BaseBucket {
      *      ディレクトリを選択する(SDE4SD).
      *      <p>本APIはオフライン(SDE4SD)のみで利用可能
      * @example
-     *      var callbacks = {
-     *          success: function(dir) {....},
-     *          error: function(err) {....}
-     *      };
-     *      Nebula.FileBucket.selectDirectory(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(dir)
-     *             dir : 選択したディレクトリへのパス(文字列)
-     * </pre>
+     * Nebula.FileBucket.selectDirectory()
+     *     .then(function(dir) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 選択したディレクトリへのパス(文字列)
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static selectDirectory(callbacks?: Callbacks): Promise<string> { return null; }
 
@@ -1495,48 +1449,44 @@ export class FileBucket extends BaseBucket {
      *      ファイルを新規アップロードする(SDE4SD).
      *      <p>本APIはオフライン(SDE4SD)のみで利用可能
      * @example
-     *      var bucket = ....;
-     *      Nebula.FileBucket.selectUploadFile({
-     *          success: function(fileInfo) {
-     *              var meta = new Nebula.FileMetadata();
-     *              meta.setContentType(fileInfo.type);
-     *              meta.setCacheDisabled(false);
+     * var bucket = ....;
+     * Nebula.FileBucket.selectUploadFile()
+     *     .then(function(fileInfo) {
+     *         var meta = new Nebula.FileMetadata();
+     *         meta.setContentType(fileInfo.type);
+     *         meta.setCacheDisabled(false);
      *
-     *              var callbacks = {
-     *                  success: function(metadata) {....},
-     *                  error: function(err) {....}
-     *              };
-     *              bucket.uploadNewFile(fileInfo.name, fileInfo.path, meta, callbacks);
-     *          },
-     *          error: function(err) {....}
-     *      });
+     *         var callbacks = {
+     *             success: function(metadata) {....},
+     *             error: function(err) {....}
+     *         };
+     *         bucket.uploadNewFile(fileInfo.name, fileInfo.path, meta, callbacks);
+     *     })
+     *     .catch(function(err) {....});
      * @param {String} fileName ファイルバケットへ保存するファイル名
      * @param {String} filePath 保存する元ファイルの絶対パス(ファイル名含む)
      * @param {FileMetadata} metadata 保存するファイルのメタデータ
-     * <pre>
-     * 指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
-     * ・ACL (オプション、省略可)
-     * ・コンテンツタイプ (必須、省略不可)
-     * ・キャッシュフラグ (必須、省略不可)
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : Nebula.FileMetadata インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * <br>指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
+     * <ul>
+     *   <li>ACL (オプション、省略可)</li>
+     *   <li>コンテンツタイプ (必須、省略不可)</li>
+     *   <li>キャッシュフラグ (必須、省略不可)</li>
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.FileMetadata インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     uploadNewFile(fileName: string, filePath: string, metadata: FileMetadata, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.uploadNewFile()");
@@ -1549,48 +1499,44 @@ export class FileBucket extends BaseBucket {
      *      ファイルを更新アップロードする(SDE4SD).
      *      <p>本APIはオフライン(SDE4SD)のみで利用可能
      * @example
-     *      var bucket = ....;
-     *      Nebula.FileBucket.selectUploadFile({
-     *          success: function(fileInfo) {
-     *              var meta = new Nebula.FileMetadata();
-     *              meta.setContentType(fileInfo.type);
-     *              meta.setCacheDisabled(false);
+     * var bucket = ....;
+     * Nebula.FileBucket.selectUploadFile()
+     *     .then(success: function(fileInfo) {
+     *         var meta = new Nebula.FileMetadata();
+     *         meta.setContentType(fileInfo.type);
+     *         meta.setCacheDisabled(false);
      *
-     *              var callbacks = {
-     *                  success: function(metadata) {....},
-     *                  error: function(err) {....}
-     *              };
-     *              bucket.uploadUpdateFile(fileInfo.name, fileInfo.path, meta, callbacks);
-     *          },
-     *          error: function(err) {....}
-     *      });
+     *         var callbacks = {
+     *             success: function(metadata) {....},
+     *             error: function(err) {....}
+     *         };
+     *         bucket.uploadUpdateFile(fileInfo.name, fileInfo.path, meta, callbacks);
+     *     })
+     *     .catch(function(err) {....});
      * @param {String} fileName ファイルバケットへ保存するファイル名
      * @param {String} filePath 保存する元ファイルの絶対パス(ファイル名含む)
-     * @param {FileMetadata} metadata 保存するファイルのメタデータ
-     * <pre>
-     * 指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
-     * ・ACL (オプション、省略可)
-     * ・コンテンツタイプ (必須、省略不可)
-     * ・キャッシュフラグ (必須、省略不可)
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(metadata)
-     *             metadata : Nebula.FileMetadata インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {FileMetadata} metadata 保存するファイルのメタデータ。
+     * <br>指定できるメタデータは以下の通りである。(他のメタデータは参照されない)
+     * <ul>
+     *   <li>ACL (オプション、省略可)</li>
+     *   <li>コンテンツタイプ (必須、省略不可)</li>
+     *   <li>キャッシュフラグ (必須、省略不可)</li>
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.FileMetadata インスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     uploadUpdateFile(fileName: string, filePath: string, metadata: FileMetadata, callbacks?: Callbacks): Promise<FileMetadata> {
         nbLogger("FileBucket.uploadUpdateFile()");
@@ -1603,33 +1549,28 @@ export class FileBucket extends BaseBucket {
      *      ファイルをダウンロードする (SDE4SD).
      *      <p>本APIはオフライン(SDE4SD)のみで利用可能
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(fileName) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.download("MyFile.jpg", "/sdcard/MyFile.jpg", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.download("MyFile.jpg", "/sdcard/MyFile.jpg")
+     *     .then(function(fileName) {...})
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットからダウンロードするファイルの名前
      * @param {String} filePath ダウンロードするファイルの保存先(ファイル名を含む絶対パス)
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(fileName)
-     *             fileName : ダウンロードが完了したファイル名
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ダウンロードが完了したファイル名
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      */
     downloadFile(fileName: string, filePath: string, callbacks?: Callbacks): Promise<string> {
         nbLogger("FileBucket.downloadFile()");
@@ -1684,38 +1625,31 @@ export class FileBucket extends BaseBucket {
      *           各API(uploadNewFile(), uploadUpdateFile(), downloadFile())のエラーコールバックが呼ばれる。
      *      <p>本APIはオフラインのみで利用可能
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(fileName) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.download("MyFile.jpg", "/sdcard/MyFile.jpg", callbacks);
-     *      ....
-     *      var cancel_callbacks = {
-     *          success: function(fileName) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.requestCancel(fileName, cancel_callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.download("MyFile.jpg", "/sdcard/MyFile.jpg")
+     *     .then(function(fileName) {...});
+     *     .catch(function(err) {...});
+     * ....
+     * bucket.requestCancel(fileName)
+     *     .then(function(fileName) {...});
+     *     .catch(function(err) {...});
      * @param {String} fileName ファイルバケットからダウンロードするファイルの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(fileName)
-     *             fileName : キャンセル要求したファイル名
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 引数で指定されたfileName
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: キャンセル要求したファイル名
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     *   {
+     *       "status"        : ステータスコード,
+     *       "statusText"    : エラーメッセージ,
+     *       "responseText"  : レスポンスメッセージ,
+     *       "data"          : 引数で指定されたfileName
+     *   }
+     * </pre>
+     * </ul>
      * @private
      */
     requestCancel(fileName: string, callbacks?: Callbacks): Promise<string> {

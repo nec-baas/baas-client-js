@@ -23,7 +23,7 @@ export interface BatchResponseJson {
  * オブジェクトストレージに対するバッチリクエスト。
  * {@link ObjectBucket}.batch() で使用する。
  * @example
- *      var batchReq = new Nebula.BatchRequest();
+ * var batchReq = new Nebula.BatchRequest();
  * @since v4.0.0
  */
 export class BatchRequest {

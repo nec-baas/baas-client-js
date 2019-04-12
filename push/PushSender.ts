@@ -27,7 +27,7 @@ export class PushSender {
      * @class PushSender
      * @description Push送信クラス
      * @example
-     *      var push = new Nebula.PushSender();
+     * var push = new Nebula.PushSender();
      * @since v4.0.0
      */
     constructor(service: NebulaService = Nebula) {
@@ -39,35 +39,27 @@ export class PushSender {
      * @name PushSender#send
      * @description Push送信する。
      * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
-     *     {
-     *         success : function(result) {
-     *             // 成功時の処理
-     *         },
-     *         error : function(error) {
-     *             // 失敗時の処理
-     *         }
-     *     }
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(result)
-     *             result : Pushリクエストの結果が JSON 形式で返る
-     *               {
-     *                   "result": "ok",
-     *                   "installations": 条件に合致したインスタレーションの数
-     *               }
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(error)
-     *             error : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *              }
-     * </pre>
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Pushリクエストの結果(JSON)
+     * <pre>
+     * {
+     *     "result": "ok",
+     *     "installations": 条件に合致したインスタレーションの数
+     * }
+     * </pre>
+     * </li>
+     * <li>失敗時: エラー要因(JSON)
+     * <pre>
+     * {
+     *     "status"        : ステータスコード,
+     *     "statusText"    : エラーメッセージ,
+     *     "responseText"  : レスポンスメッセージ
+     * }
+     * </pre>
+     * </li>
+     * </ul>
      */
     send(callbacks?: Callbacks): Promise<any> {
         nbLogger("PushSender.send()");

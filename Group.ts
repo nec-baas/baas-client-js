@@ -51,7 +51,7 @@ export class Group {
      * ・オブジェクトを生成しただけでは、まだサーバにグループ登録されていない。グループ登録は、{@link Group#save} で実施する。<br>
      * ・グループはアプリ毎ではなく、テナント毎に作成される。
      * @example
-     *      var group = new Nebula.Group("group1");
+     * var group = new Nebula.Group("group1");
      * @param {String} groupname グループ名。
      * グループ名に使用できる文字は、１バイト英数のみ。
      * @return {Group} 新規グループオブジェクトのインスタンス
@@ -273,28 +273,35 @@ export class Group {
      * @description グループエントリ追加
      * <p>
      * ・登録するグループにユーザまたはグループを追加する。
-     * @param {Object} entry Nebula.User またはNebula.Group のインスタンス
-     * <pre>
-     * ・entry は、グループに追加する Nebula.User または Nebula.Group のインスタンスを指定する。
-     *   各インスタンスには以下のプロパティが設定されていること。
-     *     Nebula.User
-     *     (プロパティ名)
-     *     _id             : ユーザのID（*）
-     *     (*) ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
+     * @param {Object} entry Nebula.User またはNebula.Group のインスタンス。
+     * <p>
+     * entry は、グループに追加する Nebula.User または Nebula.Group のインスタンスを指定する。
+     * 各インスタンスには以下のプロパティが設定されていること。
+     * <ul>
+     *     <li>Nebula.User
+     *     <ul>
+     *         <li>_id             : ユーザのID
+     *         <br>ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
      *         ユーザ取得、ログイン、カレントユーザ取得で取得したNebula.User のインスタンスには登録時のユーザID が設定されている。
-     *     Nebula.Group
-     *     (プロパティ名)
-     *     groupname       : 登録済みグループ名
-     * </pre>
+     *     </ul>
+     *     </li>
+     *     <li>Nebula.Group
+     *     <ul>
+     *         <li>groupname       : 登録済みグループ名
+     *     </ul>
+     *     </li>
+     * </ul>
      * @return {Boolean} value エントリ結果
-     * <pre>
-     * ・value は、エントリとして追加した場合 true、パラメータが不正の場合false が返る。
-     * ・処理の成功により、以下のグループオブジェクトのプロパティが更新される。
-     *     (プロパティ名)
-     *     users       : グループにエントリされるユーザ(ID)の配列（*）
-     *     groups      : グループにエントリされるグループ名の配列（*）
-     *     (*) グループプロパティ設定（group.set） でプロパティを設定した場合、エントリ追加した内容は上書きされる。
-     * </pre>
+     * <ul>
+     *     <li>value は、エントリとして追加した場合 true、パラメータが不正の場合false が返る。
+     *     <li>処理の成功により、以下のグループオブジェクトのプロパティが更新される。
+     *     <ul>
+     *         <li>users       : グループにエントリされるユーザ(ID)の配列（※）
+     *         <li>groups      : グループにエントリされるグループ名の配列（※）
+     *     </ul>
+     *     (※) グループプロパティ設定（group.set） でプロパティを設定した場合、エントリ追加した内容は上書きされる。
+     *     </il>
+     * </ul>
      */
     addEntry(entry: User|Group): boolean {
         nbLogger("Group.addEntry#start");
@@ -332,27 +339,34 @@ export class Group {
      * <p>
      * ・グループからユーザまたはグループを削除する。
      * @param {Object} entry Nebula.User またはNebula.Group のインスタンス
-     * <pre>
-     * ・entry は、グループから削除する Nebula.User または Nebula.Group のインスタンスを指定する。
-     *   各インスタンスには以下のプロパティが設定されていること。
-     *     Nebula.User
-     *     (プロパティ名)
-     *     _id             : ユーザのID（*）
-     *     (*) ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
+     * <p>
+     * entry は、グループから削除する Nebula.User または Nebula.Group のインスタンスを指定する。
+     * 各インスタンスには以下のプロパティが設定されていること。
+     * <ul>
+     *     <li>Nebula.User
+     *     <ul>
+     *         <li>_id             : ユーザのID
+     *         <br>ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
      *         ユーザ取得、ログイン、カレントユーザ取得で取得したNebula.User のインスタンスには登録時のユーザID が設定されている。
-     *     Nebula.Group
-     *     (プロパティ名)
-     *     groupname       : 登録済みグループ名
-     * </pre>
+     *         </li>
+     *     </ul>
+     *     </li>
+     *     <li>Nebula.Group
+     *     <ul>
+     *         <li>groupname       : 登録済みグループ名</li>
+     *     </ul>
+     *     </li>
+     * </ul>
      * @return {Boolean} value エントリ結果
-     * <pre>
-     * ・value は、エントリから削除した場合 true、パラメータが不正の場合false が返る。
-     * ・処理の成功により、以下のグループオブジェクトのプロパティが更新される。
-     *     (プロパティ名)
-     *     users       : グループにエントリされるユーザ(ID)の配列（*）
-     *     groups      : グループにエントリされるグループ名の配列（*）
-     *     (*) グループプロパティ設定（group.set） でプロパティを設定した場合、エントリ追加した内容は上書きされる。
-     * </pre>
+     * <ul>
+     *     <li>value は、エントリから削除した場合 true、パラメータが不正の場合false が返る。
+     *     <li>処理の成功により、以下のグループオブジェクトのプロパティが更新される。
+     *     <ul>
+     *         <li>users       : グループにエントリされるユーザ(ID)の配列（※）
+     *         <li>groups      : グループにエントリされるグループ名の配列（※）
+     *     </ul>
+     *     (※) グループプロパティ設定（group.set） でプロパティを設定した場合、エントリ追加した内容は上書きされる。
+     * </ul>
      */
     removeEntry(entry: User|Group): boolean {
         nbLogger("Group.removeEntry#start");
@@ -404,19 +418,18 @@ export class Group {
      *   グループの登録の場合は、etagがないため必ず新規に生成・保存される。<br>
      * ・グループプロパティにETag値が含まれる場合、サーバに保存されているグループのETag値と照合される。
      *   一致しなかった場合は、データ衝突として「409 Conflict」エラーとなり、グループは更新されない。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(group)
-     *             group : 登録したグループオブジェクトのインスタンス
-     *             acl を設定しなかった場合は以下のNebula.Acl インスタンスが自動的に設定される。
-     *             ・ログイン済みの場合    ：全フィールドが空。
-     *                                       オーナ（作成ユーザ）のみアクセス可。
-     *             ・未ログイン状態の場合  ：r, w に "g:anonymous" が設定される。
-     *                                       誰でも読み書き可。
-     * </pre>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 登録したグループオブジェクトのインスタンス。
+     *      <br>acl を設定しなかった場合は以下のNebula.Acl インスタンスが自動的に設定される。
+     *      <ul>
+     *      <li>ログイン済みの場合   : 全フィールドが空。オーナ（作成ユーザ）のみアクセス可。
+     *      <li>未ログイン状態の場合 : r, w に "g:anonymous" が設定される。誰でも読み書き可。
+     *      </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     save(callbacks?: Callbacks): Promise<Group> {
         nbLogger("Group.save#start");
@@ -479,15 +492,13 @@ export class Group {
      * ・グループにユーザ・子グループを追加する。
      * @param {string[]} userIds 追加するユーザIDの配列
      * @param {string[]} groups 追加するグループ名の配列
-     * @param {Callbacks} callbacks 応答コールバック
-     * <p>
-     * 処理が成功した場合、success の呼び出しにて通知する。
-     * success の引数は以下の通り。
-     * <pre>
-     *     success(group)
-     *         group : 変更したグループオブジェクトのインスタンス
-     * </pre>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 変更したグループオブジェクトのインスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      * @since 6.5.0
      */
     addMembers(userIds: string[], groups: string[], callbacks?: Callbacks): Promise<Group> {
@@ -501,14 +512,13 @@ export class Group {
      * ・グループからにユーザ・子グループを削除する
      * @param {string[]} userIds 削除するユーザIDの配列
      * @param {string[]} groups 削除するグループ名の配列
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(group)
-     *             group : 変更したグループオブジェクトのインスタンス
-     * </pre>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 変更したグループオブジェクトのインスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      * @since 6.5.0
      */
     removeMembers(userIds: string[], groups: string[], callbacks?: Callbacks): Promise<Group> {
@@ -552,23 +562,21 @@ export class Group {
      * @memberOf Group
      * @description グループ削除
      * @param {Group} group 削除するグループオブジェクトのインスタンス
-     * <pre>
-     * ・group にnull は指定できない。
-     * ・グループ削除に必要なインスタンスのプロパティは、以下の通りとする。
-     *     (プロパティ名)
-     *     groupname   : グループ名（必須）
-     *     etag        : グループに設定されるETag値（オプション）
-     * ・ETag値は、グループ新規保存した場合にサーバで追加され、
+     * <ul>
+     * <li>group にnull は指定できない。
+     * <li>グループ削除に必要なインスタンスのプロパティは、以下の通りとする。
+     *     <ul>
+     *     <li>groupname   : グループ名（必須）
+     *     <li>etag        : グループに設定されるETag値（オプション）
+     *     </ul>
+     * <li>ETag値は、グループ新規保存した場合にサーバで追加され、
      *   グループを更新する度にサーバで変更される固有値である。
      *   ETag値は、グループの "etag"プロパティに格納される。
-     * ・etagを指定すると、サーバに保存されているグループのETag値と照合される。
+     * <li>etagを指定すると、サーバに保存されているグループのETag値と照合される。
      *   一致しなかった場合は、データ衝突として「409 Conflict」エラーとなり、グループは削除されない。
      *   etagがnullの場合は、ETag値は照合されずグループは無条件で削除される。
-     * </pre>
-     * @param {Callbacks} callbacks 応答コールバック
-     * <p>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *   success の引数は無し。
+     * </ul>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      * @since v4.0.1
      */
@@ -641,29 +649,28 @@ export class Group {
      * @memberOf Group
      * @description グループ検索
      * @param {Object} conditions 取得条件
-     * <pre>
-     * ・conditions にnull を指定した場合は全グループ一を取得する。
-     * ・conditions は、JSON 形式で指定する。
+     * <ul>
+     * <li>conditions にnull を指定した場合は全グループ一を取得する。
+     * <li>conditions は、JSON 形式で検索条件を指定する。
+     *     <pre>
      *     {
-     *         "groupname" : "group1"
-     *     }
-     *     (プロパティ名)
-     *     groupname    : グループ名
-     * </pre>
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(groups)
-     *             groups : 取得した Nebula.Group インスタンスの配列
-     *             各要素に以下のグループのプロパティが更新される
-     *                 (プロパティ名)
-     *                 groupname   : グループ名
-     *                 users       : 所属ユーザIDの一覧
-     *                 groups      : 所属サブグループ名の一覧
-     *                 acl         : ACL
-     * </pre>
+     *         "groupname" : "group1"  // グループ名
+     *     }</pre></li>
+     * </ul>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 取得した Nebula.Group インスタンスの配列。
+     *       各要素に以下のグループのプロパティが格納される。
+     *     <ul>
+     *     <li>groupname : グループ名
+     *     <li>users     : 所属ユーザIDの一覧
+     *     <li>groups    : 所属サブグループ名の一覧
+     *     <li>acl       : ACL
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static query(conditions: GroupQuery, callbacks?: Callbacks): Promise<Group[]> { return null; }
 

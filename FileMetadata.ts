@@ -23,7 +23,7 @@ export interface FileMetadataJson {
  * @classdesc ファイルメタデータ クラス
  * @description FileMetadata インスタンスを生成する
  * @example
- *    var meta = new Nebula.FileMetadata();
+ * var meta = new Nebula.FileMetadata();
  */
 export class FileMetadata {
     static SYNC_STATE_UNDEFINED = -1;
@@ -71,9 +71,9 @@ export class FileMetadata {
      *      ファイル名を取得する.
      *      <br/><br/>ファイル名がセットされていない場合は null を返す
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var fileName = metadata.getFileName();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var fileName = metadata.getFileName();
+     *     ....
      * @return
      *      {String} ファイル名を返す。ファイル名がセットされていない場合は、null を返す。
      */
@@ -87,9 +87,9 @@ export class FileMetadata {
      *      ファイル名をセットする.
      *      <br/><br/>すでにファイル名がセットされている場合は上書きされる。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          metadata.setFileName("NewFileName.txt");
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     metadata.setFileName("NewFileName.txt");
+     *     ....
      * @param {String} fileName ファイル名
      * @return {FileMetadata} this
      */
@@ -105,9 +105,9 @@ export class FileMetadata {
      *      ファイルに設定されているACLを取得する.
      *      <br/><br/>ACLがセットされていない場合は null を返す
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var acl = metadata.getAcl();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var acl = metadata.getAcl();
+     *     ....
      * @return
      *      {Acl} ACLを返す。ACLがセットされていない場合は、null を返す。
      */
@@ -121,11 +121,11 @@ export class FileMetadata {
      *      ファイルにACLをセットする.
      *      <br/><br/>すでにACLがセットされている場合は上書きされる
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var newAcl = new Nebula.Acl();
-     *          ....
-     *          metadata.setAcl(newAcl);
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var newAcl = new Nebula.Acl();
+     *     ....
+     *     metadata.setAcl(newAcl);
+     *     ....
      * @param {Acl} acl セットするACL
      * @return {FileMetadata} this
      */
@@ -144,9 +144,9 @@ export class FileMetadata {
      *      ファイルに設定されているコンテンツタイプを取得する.
      *      <br/><br/>コンテンツタイプがセットされていない場合は null を返す。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var contentType = metadata.getContentType();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var contentType = metadata.getContentType();
+     *     ....
      * @return
      *      {String} ファイルにセットされているコンテンツタイプを返す。セットされていない場合は、null を返す。
      */
@@ -160,9 +160,9 @@ export class FileMetadata {
      *      コンテンツタイプをセットする.
      *      <br/><br/>すでにコンテンツタイプがセットされている場合は上書きされる。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          metadata.setContentType("image/jpeg");
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     metadata.setContentType("image/jpeg");
+     *     ....
      * @param {Acl} contentType セットするコンテンツタイプ
      * @return {FileMetadata} this
      */
@@ -179,9 +179,9 @@ export class FileMetadata {
      *      <br/><br/>作成日時は、ISO 8601日付形式の文字列として返す。(例：2014-03-12T09:12:53.000Z)
      *      <br/>作成日時がセットされていない場合は null を返す。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var createdAt = metadata.getCreatedAt();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var createdAt = metadata.getCreatedAt();
+     *     ....
      * @return
      *      {String} ファイルの作成日時を返す。セットされていない場合は、null を返す。
      */
@@ -206,9 +206,9 @@ export class FileMetadata {
      *      <br/><br/>更新日時は、ISO 8601日付形式の文字列として返す。(例：2014-03-12T09:12:53.000Z)
      *      <br/>更新日時がセットされていない場合は null を返す。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var updatedAt = metadata.getUpdatedAt();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var updatedAt = metadata.getUpdatedAt();
+     *     ....
      * @return
      *      {String} ファイルの更新日時を返す。セットされていない場合は、null を返す。
      */
@@ -232,9 +232,9 @@ export class FileMetadata {
      *      ファイルのサイズを取得する.
      *      <br/><br/>ファイルサイズがセットされていない場合は -1 を返す
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var size = metadata.getSize();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var size = metadata.getSize();
+     *     ....
      * @return
      *      {Int} ファイルサイズを返す。セットされていない場合は、-1 を返す。
      */
@@ -258,9 +258,9 @@ export class FileMetadata {
      *      ファイルに設定されている公開URLを取得する.
      *      <br/><br/>公開URLがセットされていない場合は null を返す。
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var url = metadata.getPublicUrl();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var url = metadata.getPublicUrl();
+     *     ....
      * @return
      *      {String} 公開URLを返す。セットされていない場合は、null を返す。
      */
@@ -286,18 +286,18 @@ export class FileMetadata {
      *      <br/><br/>同期状態がセットされていない場合は Nebula.FileMetadata.SYNC_STATE_UNDEFINED を返す
      *      <br/><br/>本APIはオフラインのみで利用可能
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var syncState = metadata.getFileSyncState();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var syncState = metadata.getFileSyncState();
+     *     ....
      * @return
      *      {Integer} 以下のいずれかの同期状態を返す
-     * <ul><pre>
-     * ・Nebula.FileMetadata.SYNC_STATE_SYNCED      : 同期済み
-     * ・Nebula.FileMetadata.SYNC_STATE_DIRTY       : 追加/更新/削除
-     * ・Nebula.FileMetadata.SYNC_STATE_SYNCING     : 同期中
-     * ・Nebula.FileMetadata.SYNC_STATE_CONFLICTED  : 衝突発生中
-     * ・Nebula.FileMetadata.SYNC_STATE_UNDEFINED   : 未設定
-     * </pre></ul>
+     * <ul>
+     * <li>Nebula.FileMetadata.SYNC_STATE_SYNCED      : 同期済み
+     * <li>Nebula.FileMetadata.SYNC_STATE_DIRTY       : 追加/更新/削除
+     * <li>Nebula.FileMetadata.SYNC_STATE_SYNCING     : 同期中
+     * <li>Nebula.FileMetadata.SYNC_STATE_CONFLICTED  : 衝突発生中
+     * <li>Nebula.FileMetadata.SYNC_STATE_UNDEFINED   : 未設定
+     * </ul>
      * @private
      */
     getFileSyncState(): number {
@@ -323,9 +323,9 @@ export class FileMetadata {
      *      <br/>同期が完了していないファイルは、同期されるまで null が設定されている
      *      <br/><br/>本APIはオフラインのみで利用可能
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var lastSyncTime = metadata.getLastSyncTime();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var lastSyncTime = metadata.getLastSyncTime();
+     *     ....
      * @return
      *      {String} 最終同期日時を返す。セットされていない場合は、null を返す。
      * @private
@@ -351,9 +351,9 @@ export class FileMetadata {
      *      <br/><br/>ファイルメタデータIDがセットされていない場合は null を返す
      *      <br/>同期が完了していないファイルは、同期されるまで null が設定されている
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var metaId = metadata.getMetaId();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var metaId = metadata.getMetaId();
+     *     ....
      * @return
      *      {String} ファイルメタデータIDを返す。セットされていない場合は、null を返す。
      */
@@ -379,9 +379,9 @@ export class FileMetadata {
      *      <br/>同期が完了していないファイルは、同期されるまで null が設定されている
      *      <br/>metaETag値は、サーバ側で同期するときに使用され、一致しない場合は衝突と判断される
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var etag = metadata.getMetaETag();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var etag = metadata.getMetaETag();
+     *     ....
      * @return
      *      {String} metaEtagを返す。セットされていない場合は、null を返す。
      */
@@ -407,9 +407,9 @@ export class FileMetadata {
      *      <br/>同期が完了していないファイルは、同期されるまで null が設定されている
      *      <br/>fileETag値は、サーバ側で同期するときに使用され、一致しない場合は衝突と判断される
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          var etag = metadata.getFileETag();
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     var etag = metadata.getFileETag();
+     *     ....
      * @return
      *      {String} fileEtagを返す。セットされていない場合は、null を返す。
      */
@@ -458,15 +458,15 @@ export class FileMetadata {
      *      <br/>キャッシュ禁止フラグが設定されていない場合は false を返す
      *      <br/><br/>本APIはオフラインのみで利用可能
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          if (metadata.isCacheDisabled()) {
-     *              // キャッシュ禁止の場合の処理
-     *          }
-     *          else {
-     *              // キャッシュOKの場合の処理
-     *              ....
-     *          }
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     if (metadata.isCacheDisabled()) {
+     *         // キャッシュ禁止の場合の処理
+     *     }
+     *     else {
+     *         // キャッシュOKの場合の処理
+     *         ....
+     *     }
+     *     ....
      * @return
      *      {Boolean} キャッシュ禁止の場合はtrue、それ以外の場合はfalseを返す
      * @private
@@ -483,9 +483,9 @@ export class FileMetadata {
      *      <br/><br/>キャッシュ禁止がtrueの場合、キャッシュへのファイル保存が行われない
      *      <br/><br/>本APIはオフラインのみで利用可能
      * @example
-     *      fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
-     *          metadata.setCacheDisabled(true);
-     *          ....
+     * fileBucket.getMetadata("MyFile.txt").then(function(metadata) {
+     *     metadata.setCacheDisabled(true);
+     *     ....
      * @param {Boolean} cacheDisabled キャッシュ禁止フラグ
      * @private
      */

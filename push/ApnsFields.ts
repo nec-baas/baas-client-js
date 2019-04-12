@@ -11,13 +11,13 @@ export interface ApnsFieldsType {
  * @memberOf PushSender
  * @description APNs用Push送信パラメータ
  * @example
- *      var apns = new Nebula.PushSender.ApnsFields();
- *      apns.badge = 5;
- *      apns.sound = "sound1.aiff";
- *      apns.contentAvailable = 1;
- *      apns.category = "Information";
- *      var push = new Nebula.PushSender();
- *      push.apnsFields = apns;
+ * var apns = new Nebula.PushSender.ApnsFields();
+ * apns.badge = 5;
+ * apns.sound = "sound1.aiff";
+ * apns.contentAvailable = 1;
+ * apns.category = "Information";
+ * var push = new Nebula.PushSender();
+ * push.apnsFields = apns;
  * @since v4.0.0
  */
 export class ApnsFields {

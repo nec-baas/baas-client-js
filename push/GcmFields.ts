@@ -9,11 +9,11 @@ export interface GcmFieldsType {
  * @memberOf PushSender
  * @description FCM(旧GCM)用Push送信パラメータ
  * @example
- *      var gcm = new Nebula.PushSender.GcmFields();
- *      gcm.title = "title";
- *      gcm.uri = "http://www.nebula.test.com";
- *      var push = new Nebula.PushSender();
- *      push.gcmFields = gcm;
+ * var gcm = new Nebula.PushSender.GcmFields();
+ * gcm.title = "title";
+ * gcm.uri = "http://www.nebula.test.com";
+ * var push = new Nebula.PushSender();
+ * push.gcmFields = gcm;
  * @since v4.0.0
  */
 export class GcmFields {

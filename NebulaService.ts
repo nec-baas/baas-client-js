@@ -148,7 +148,7 @@ export interface ProxyServer {
  * NebulaService インスタンスを生成する。生成したインスタンス毎に異なるテナント/アプリに接続できる。
  * {@link Nebula} はデフォルトの NebulaService インスタンスである。
  * @example
- *    var service2 = new Nebula.NebulaService();
+ * var service2 = new Nebula.NebulaService();
  */
 export class NebulaService {
     _config: NebulaConfig;
@@ -354,25 +354,25 @@ export class NebulaService {
      * @description クライアント証明書の設定を行う (Node.js使用時のみ有効)。
      * <p>
      * https Proxyを使用する場合、本設定は無効である。NebulaService#setHttpsProxy()のoptionsに証明書の設定を行うこと。
-     * @param {Object} certInfo 証明書情報を指定する。
-     * pfxとpassphrase(またはkeyとcert),ca を指定する。
+     * @param {Object} certInfo 証明書情報
+     * <p>pfxとpassphrase(またはkeyとcert),ca を指定する。
      * pfxとcert/keyを同時に指定した場合の動作は保証しない。
      * nullを指定した場合は証明書の設定を解除する。
      * @example
-     *  // p12(pfx)形式のクライアント証明書(証明書/秘密鍵)を指定、p12ファイルのパスフレーズを指定
-     *  // 信頼するCA証明書として、2件を指定する場合
-     *  service.setClientCertificate({
-     *    pfx: fs.readFileSync('clientCertificate.p12'),
-     *    passphrase: 'password',
-     *    ca: [fs.readFileSync('caCert1.pem'), fs.readFileSync('caCert2.pem')]
-     *  });
+     * // p12(pfx)形式のクライアント証明書(証明書/秘密鍵)を指定、p12ファイルのパスフレーズを指定
+     * // 信頼するCA証明書として、2件を指定する場合
+     * service.setClientCertificate({
+     *   pfx: fs.readFileSync('clientCertificate.p12'),
+     *   passphrase: 'password',
+     *   ca: [fs.readFileSync('caCert1.pem'), fs.readFileSync('caCert2.pem')]
+     * });
      *
-     *  // pem形式のクライアント証明、キーを使用。CA証明書を1件指定
-     *  service.setClientCertificate({
-     *    cert: fs.readFileSync('clientCert.pem'),
-     *    key: fs.readFileSync('clientKey.pem'),
-     *    ca: fs.readFileSync('caCert1.pem')
-     *  });
+     * // pem形式のクライアント証明、キーを使用。CA証明書を1件指定
+     * service.setClientCertificate({
+     *   cert: fs.readFileSync('clientCert.pem'),
+     *   key: fs.readFileSync('clientKey.pem'),
+     *   ca: fs.readFileSync('caCert1.pem')
+     * });
      * @return {NebulaService} this
      */
     setClientCertificate(certInfo: ClientCertOptions): NebulaService {
@@ -525,44 +525,42 @@ export class NebulaService {
      * ・アプリケーションは、SDK の初回利用またはパラメータ変更を行う際に呼び出さなければならない。
      * </pre>
      * @param {Object} params MBaaS JavaScript SDK 初期化パラメータ
-     * <pre>
-     * ・params は、初期化パラメータをJSON 形式で指定する。
-     *     {
-     *         "tenant"              : "my-tenant-id",
-     *         "appId"               : "my-app-id",
-     *         "appKey"              : "my-app-key",
-     *         "baseUri"             : "http://baas.example.com/api",
-     *         "offline"             : false,
-     *         "allowSelfSignedCert" : false,
-     *         "serviceId"           : "my-service-id",
-     *         "debugMode"           : "debug",
-     *         "enableHttp2"         : false
-     *     }
-     *     (プロパティ名)
-     *     tenant      : テナント毎に割り当てられるユニークなID（必須）
-     *     appId       : アプリケーション毎に割り当てられるユニークなID（必須）
-     *     appKey      : アプリケーション毎に割り当てられる秘密キー（必須）
-     *     baseUri     : MBaaS REST API のエンドポイントURL（必須）
-     *     offline      : オフライン機能の指定。（オプション）
-     *                   オフライン機能を利用する場合はtrue を指定する。（初期値：false）
-     *     allowSelfSignedCert : 自己署名証明書の使用を認める指定。（オプション）
-     *                   オフラインモード使用時(SDE for SmartDevice使用時)、
-     *                   及びNode.js使用時(Https Proxy未使用時)のみ有効。
-     *                   (Node.jsでHttps Proxy使用時は、NebulaService#setHttpsProxy()を参照して設定を行うこと)
-     *                   SSL接続に自己署名証明書を使用しているMBaaSサーバを
-     *                   利用する場合はtrue を指定する。（初期値：false）
-     *     serviceId   : NebulaService毎に割り当てられるユニークなID（オプション）
-     *                   マルチテナント機能を使用して複数のNebulaService(インスタンス)を生成する場合等に使用。
-     *                   本IDはログイン情報キャッシュ時のKey情報に利用される。
-     *     debugMode   : ログ出力レベル。（オプション）
-     *                   "release", "debug", "test" のいずれかを指定
-     *                   debug は、コンソール上にデバッグログを出力する。
-     *                   release は、クリティカルなエラー以外のコンソール上にデバッグログを出力しない。
-     *                   test は、TBD。
-     *     enableHttp2 : HTTP/2使用設定 (オプション)
-     *                   Node.js使用時(v8.4.0以降)のみ有効。
-     *                   通信にHTTP/2を利用する場合はtrueを指定する。(初期値: false)
-     * </pre>
+     * <p>初期化パラメータをJSON 形式で指定する。JSONプロパティは以下の通り。
+     *  <ul>
+     *     <li>tenant (string) （必須）
+     *       <p>テナント毎に割り当てられるユニークなID
+     *     <li>appId  (string) （必須）
+     *       <p>アプリケーション毎に割り当てられるユニークなID
+     *     <li>appKey (string) (必須)
+     *       <p>アプリケーション毎に割り当てられる秘密キー
+     *     <li>baseUri (string)（必須）
+     *       <p>MBaaS REST API のエンドポイントURL
+     *     <li>offline (boolean)（オプション, 初期値：false）
+     *       <p>オフライン機能の指定。
+     *       <p>オフライン機能を利用する場合はtrue を指定する。
+     *     <li>allowSelfSignedCert (boolean)（オプション, 初期値：false）
+     *       <p>自己署名証明書の使用を認める指定。
+     *       <p>オフラインモード使用時(SDE for SmartDevice使用時)、
+     *       及びNode.js使用時(Https Proxy未使用時)のみ有効。
+     *       (Node.jsでHttps Proxy使用時は、NebulaService#setHttpsProxy()を参照して設定を行うこと)
+     *       <p>SSL接続に自己署名証明書を使用しているMBaaSサーバを
+     *       利用する場合はtrue を指定する。
+     *     <li>serviceId  (string)（オプション）
+     *       <p>NebulaService毎に割り当てられるユニークなID
+     *       <p>マルチテナント機能を使用して複数のNebulaService(インスタンス)を生成する場合等に使用。
+     *       本IDはログイン情報キャッシュ時のKey情報に利用される。
+     *     <li>debugMode (string)（オプション）
+     *       <p>ログ出力レベル。
+     *       <p>"release", "debug" のいずれかを指定
+     *       <ul>
+     *         <li>debug は、コンソール上にデバッグログを出力する。
+     *         <li>release は、クリティカルなエラー以外のコンソール上にデバッグログを出力しない。
+     *       </ul>
+     *     <li>enableHttp2 (boolean)(オプション, 初期値: false)
+     *       <p>HTTP/2使用設定
+     *       <p>Node.js使用時(v8.4.0以降)のみ有効。
+     *       通信にHTTP/2を利用する場合はtrueを指定する。
+     * </ul>
      * @return {NebulaService} this
      */
     initialize(params: NebulaInitParam): NebulaService {
@@ -618,34 +616,9 @@ export class NebulaService {
      * <p>
      * ・オフライン用ログインキャッシュ有効期限を設定する。
      * @param {number} expire ログインキャッシュ有効期限（秒）
-     * <pre>
-     * ・expireには、ログインキャッシュ有効期限（秒）を指定する。
-     *     デフォルトは、「259200秒（72時間）」である。
-     * </pre>
-     * @param {Callbacks} callbacks 結果を受け取るコールバック
-     * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
-     *     {
-     *         success : function() {
-     *             // 成功時の処理
-     *         },
-     *         error : function(error) {
-     *             // 失敗時の処理
-     *         }
-     *     }
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success()
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(error)
-     *             error : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *              }
-     * </pre>
+     * <p>ログインキャッシュ有効期限を指定する。
+     * デフォルトは、「259200秒（72時間）」である。
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise<any>} Promise
      */
     setLoginCacheValidTime(expire: number, callbacks?: Callbacks): Promise<void> {
@@ -683,33 +656,13 @@ export class NebulaService {
      * @description ログインキャッシュ有効期限の取得（オフライン機能限定）
      * <p>
      * ・オフライン用ログインキャッシュ有効期限を取得する。
-     * @param {Callbacks} callbacks 結果を受け取るコールバック
-     * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
-     *     {
-     *         success : function(expire) {
-     *             // 成功時の処理
-     *             // expire : ログインキャッシュ有効期限
-     *         },
-     *         error : function(error) {
-     *             // 失敗時の処理
-     *         }
-     *     }
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(expire)
-     *             expireには、ログインキャッシュ有効期限（秒）が格納される。
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(error)
-     *             error : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise<any>} Promise
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ログインキャッシュ有効期限（秒）
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getLoginCacheValidTime(callbacks?: Callbacks): Promise<number> {
         nbLogger("Nebula.getLoginCacheValidTime#start");
@@ -753,17 +706,19 @@ export class NebulaService {
      * <p>
      * ・ネットワークの接続状態変更イベントを受け取るリスナーを設定する。
      * @param {Object} listener ネットワークイベントリスナ
+     * <ul>
+     * <li>listener には、イベント発生時のコールバックを指定する。
      * <pre>
-     * ・listener には、イベント発生時のコールバックを指定する。
      *     {
      *         onNetworkStateChanged : function(isOnline) {
      *             // ネットワークの接続状態が変更されたときに呼び出される
      *             // isOnline : trueはオンライン状態、falseはオフライン状態
      *         }
      *     }
-     * ・すでに登録している場合は、上書きされる。
-     * ・登録を取り消す場合は、listener に null を指定する。
      * </pre>
+     * <li>すでに登録している場合は、上書きされる。
+     * <li>登録を取り消す場合は、listener に null を指定する。
+     * </ul>
      * @return {NebulaService} this
      */
     setNetworkEventListener(listener: NetworkEventListener): NebulaService {
@@ -803,8 +758,7 @@ export class NebulaService {
      * 注: 本設定はグローバル設定である(NebulaService毎ではない)
      * @param {Object} proxy プロキシ設定。host, port を指定する。
      * @example
-     *  // Example:
-     *  Nebula.setHttpProxy({ host: 'proxysv.example.com', port: 8080});
+     * Nebula.setHttpProxy({ host: 'proxysv.example.com', port: 8080});
      */
     setHttpProxy(proxy: ProxyServer): void {
         let agent: object = null;
@@ -827,32 +781,31 @@ export class NebulaService {
      * クライアント証明書認証に使用する証明書の設定などを行う。
      * 使用方法はExampleを参照のこと。
      * @example
-     *  // Example:
-     *  // https Proxyを指定する
-     *  Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080});
+     * // https Proxyを指定する
+     * Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080});
      *
-     *  // p12(pfx)形式のクライアント証明書(証明書/秘密鍵)を指定、p12ファイルのパスフレーズを指定
-     *  // 信頼するCA証明書として、2件を指定する場合
-     *  Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
-     *  {
-     *    pfx: fs.readFileSync('clientCertificate.p12'),
-     *    passphrase: 'password',
-     *    ca: [fs.readFileSync('caCert1.pem'), fs.readFileSync('caCert2.pem')]
-     *  });
+     * // p12(pfx)形式のクライアント証明書(証明書/秘密鍵)を指定、p12ファイルのパスフレーズを指定
+     * // 信頼するCA証明書として、2件を指定する場合
+     * Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
+     * {
+     *   pfx: fs.readFileSync('clientCertificate.p12'),
+     *   passphrase: 'password',
+     *   ca: [fs.readFileSync('caCert1.pem'), fs.readFileSync('caCert2.pem')]
+     * });
      *
-     *  // pem形式のクライアント証明、キーを使用。CA証明書を1件指定
-     *  Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
-     *  {
-     *    cert: fs.readFileSync('clientCert.pem'),
-     *    key: fs.readFileSync('clientKey.pem'),
-     *    ca: fs.readFileSync('caCert1.pem')
-     *  });
+     * // pem形式のクライアント証明、キーを使用。CA証明書を1件指定
+     * Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
+     * {
+     *   cert: fs.readFileSync('clientCert.pem'),
+     *   key: fs.readFileSync('clientKey.pem'),
+     *   ca: fs.readFileSync('caCert1.pem')
+     * });
      *
-     *  // 自己署名証明書を使用しているサーバへの接続を許可する
-     *  Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
-     *  {
-     *    rejectUnauthorized: false
-     *  });
+     * // 自己署名証明書を使用しているサーバへの接続を許可する
+     * Nebula.setHttpsProxy({ host: 'proxysv.example.com', port: 8080},
+     * {
+     *   rejectUnauthorized: false
+     * });
      */
     setHttpsProxy(proxy: ProxyServer, options?: JsonObject): void {
         let agent: any = null;

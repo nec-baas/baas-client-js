@@ -76,7 +76,7 @@ export class User implements UserJson {
      * <p>
      * 生成しただけの状態では、まだサーバには登録されていない。ユーザ登録は {@link User#register} で実施する。
      * @example
-     *     var user = new Nebula.User();
+     * var user = new Nebula.User();
      * @return {Object} 新規ユーザオブジェクトのインスタンス
      */
     constructor(service: NebulaService = Nebula) {
@@ -441,20 +441,19 @@ export class User implements UserJson {
      *     <li>clientCertUser    : クライアント証明書ユーザ trueを設定すること(必須)
      *     <li>options           : オプション(オプション) optionsには、JSON形式で記述された任意のオブジェクトを指定できる。
      *  </ul>
-     * @param {Callbacks} callbacks 応答コールバック。
-     * <p>
-     * 処理が成功した場合、success の呼び出しにて通知する。
-     * なお、処理が成功した状態ではまだログインは実施していない。
-     * 引数は以下の通り。
-     * <pre>
-     *     user : ユーザオブジェクトのインスタンス
-     *     処理の成功により、以下のユーザオブジェクトのプロパティが追加格納される
-     *         (プロパティ名)
-     *         _id         : 登録したユーザのID
-     *         createdAt   : 登録日付
-     *         updatedAt   : 最終更新日付
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ユーザオブジェクトのインスタンス。なお、処理が成功した状態ではまだログインは実施していない。
+     *     以下のユーザオブジェクトのプロパティが追加格納される
+     *     <ul>
+     *     <li>_id         : 登録したユーザのID
+     *     <li>createdAt   : 登録日付
+     *     <li>updatedAt   : 最終更新日付
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     register(callbacks?: Callbacks): Promise<User> {
         nbLogger("User.register#start");
@@ -519,44 +518,43 @@ export class User implements UserJson {
      *     {
      *         "email"         : "foo@example.com",
      *         "password"      : "passwOrd"
-     *     }
-     *  </pre>
+     *     }</pre>
      * <pre>
      *     {
      *         "token"         : "TOKEN"
-     *     }
-     *  </pre>
+     *     }</pre>
      *  <ul>
      *     <li>email       : E-mailアドレス（※）
      *     <li>username    : ユーザ名（※）
      *     <li>token       : ワンタイムトークン（※）
      *     <li>password    : パスワード（E-mailアドレス、ユーザ名指定時は必須）
      *   </ul>
-     *  (Y) email か username か token のいずれかを指定する。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(user)
-     *             user : ログインしたユーザオブジェクトのインスタンス
-     *             処理の成功により、以下のユーザオブジェクトのプロパティが格納される
-     *                 (プロパティ名)
-     *                 _id          : ログインしたユーザのID
-     *                 sessionToken : セッショントークン
-     *                 expire       : ログインの有効期限 (unix time [秒])
-     *                 (以下の情報はオフライン機能無効時のみ取得可)
-     *                 username     : ユーザ名
-     *                 email        : E-mail
-     *                 options      : オプション情報(JSON)
-     *                 groups       : ユーザが所属するグループ名の配列
-     *                 createdAt    : ユーザの作成日時
-     *                 updatedAt    : ユーザの更新日時
-     *                 lastLoginAt  : ユーザの最終ログイン日時
-     *                 etag         : ETag
-     *                 federated    : 外部認証連携有無
-     *                 primaryLinkedUserId : プライマリリンクユーザID
-     * </pre>
+     *  (※) email か username か token のいずれかを指定する。
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ログインしたユーザオブジェクトのインスタンス。
+     *           処理の成功により、以下のユーザオブジェクトのプロパティが格納される
+     *     <ul>
+     *     <li>_id          : ログインしたユーザのID
+     *     <li>sessionToken : セッショントークン
+     *     <li>expire       : ログインの有効期限 (unix time [秒])
+     *     <li>(以下の情報はオフライン機能無効時のみ取得可)
+     *     <li>username     : ユーザ名
+     *     <li>email        : E-mail
+     *     <li>options      : オプション情報(JSON)
+     *     <li>groups       : ユーザが所属するグループ名の配列
+     *     <li>createdAt    : ユーザの作成日時
+     *     <li>updatedAt    : ユーザの更新日時
+     *     <li>lastLoginAt  : ユーザの最終ログイン日時
+     *     <li>etag         : ETag
+     *     <li>federated    : 外部認証連携有無
+     *     <li>primaryLinkedUserId : プライマリリンクユーザID
+     *     </ul>
+     *
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static login(userInfo: LoginInfo, callbacks?: Callbacks): Promise<User> { return null; }
 
@@ -612,12 +610,7 @@ export class User implements UserJson {
      * @method
      * @memberOf User
      * @description ログアウト
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success()
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     static logout(callbacks?: Callbacks): Promise<void> { return null; }
@@ -661,9 +654,9 @@ export class User implements UserJson {
      * <p>
      * ・カレント（ログイン中）のユーザを取得する。<br>
      * ・本情報はクライアントにキャッシュされている情報のため、サーバの最新情報とは一致しない場合がある。
-     * @param {Callbacks} callbacks 応答コールバック (Deprecated)
+     * @param {Callbacks} callbacks コールバック (Deprecated)
      * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
+     * ・callbacks は、成功時と失敗時のコールバックを指定する。
      *   callbacks 引数は後方互換性維持のためにのみ存在するので、通常指定する必要はない。
      *     {
      *         success : function(user) {
@@ -763,28 +756,27 @@ export class User implements UserJson {
      * @description カレントユーザ取得(サーバ問合せ)
      * <p>
      * ・カレント（ログイン中）のユーザを取得する。サーバへの問い合わせが発生する。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(user)
-     *             user : ユーザオブジェクトのインスタンス。
-     *             カレントユーザが存在しない場合は、null が返る。
-     *         　　user に設定されるプロパティは以下のとおり。
-     *                 (プロパティ名)
-     *                 _id         : ユーザID
-     *                 username    : ユーザ名
-     *                 email       : E-mailアドレス
-     *                 options     : オプション
-     *                 groups      : 所属グループ一覧 (注: '_id' を指定して検索した場合のみ。オフライン機能有効時は無効。)
-     *                 createdAt   : ユーザ登録日時
-     *                 updatedAt   : 最終更新日時
-     *                 lastLoginAt : 最終ログイン日時
-     *                 etag        : ETag
-     *                 federated   : 外部認証連携有無
-     *                 primaryLinkedUserId : プライマリリンクユーザID
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: ユーザオブジェクトのインスタンス。カレントユーザが存在しない場合は null。
+     *           設定されるプロパティは以下のとおり。
+     *     <ul>
+     *     <li>_id         : ユーザID
+     *     <li>username    : ユーザ名
+     *     <li>email       : E-mailアドレス
+     *     <li>options     : オプション
+     *     <li>groups      : 所属グループ一覧 (注: '_id' を指定して検索した場合のみ。オフライン機能有効時は無効。)
+     *     <li>createdAt   : ユーザ登録日時
+     *     <li>updatedAt   : 最終更新日時
+     *     <li>lastLoginAt : 最終ログイン日時
+     *     <li>etag        : ETag
+     *     <li>federated   : 外部認証連携有無
+     *     <li>primaryLinkedUserId : プライマリリンクユーザID
+     * </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static queryCurrent(callbacks?: Callbacks): Promise<User> { return null; }
 
@@ -846,32 +838,38 @@ export class User implements UserJson {
      * いずれも指定しない場合は全件検索となる。
      * 全件検索時は skip/limit で検索範囲を指定する。
      * (ただし skip/limit はオフライン有効時は無効)
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     conditions.countQuery が false の場合、success の書式は以下の通りとなる。
-     *         success(users)
-     *             users : 取得したユーザオブジェクトインスタンスの配列
-     *             処理の成功により、配列毎に以下のユーザオブジェクトのプロパティが更新される
-     *                 (プロパティ名)
-     *                 username    : ユーザ名
-     *                 email       : E-mailアドレス
-     *                 options     : オプション
-     *                 groups      : 所属グループ一覧 (注: '_id' を指定して検索した場合のみ。オフライン機能有効時は無効。)
-     *                 createdAt   : ユーザ登録日付
-     *                 updatedAt   : 最終更新日付
-     *                 lastLoginAt : 最終ログイン日時(マスターキー使用時のみ)
-     *                 etag        : ETag
-     *                 federated   : 外部認証連携有無
-     *                 primaryLinkedUserId : プライマリリンクユーザID
-     *
-     *     conditions.countQuery が true の場合、success の書式は以下の通りとなる。
-     *         success(json)
-     *             json.users : 取得したユーザオブジェクトインスタンスの配列。内容は上記 users と同じ。
-     *             json.count : 全件数
-     *
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時:
+     * <ul>
+     *     <li>conditions.countQuery が false の場合、取得したユーザオブジェクトインスタンスの配列。
+     *     配列要素毎に以下のユーザオブジェクトのプロパティが格納される。
+     *     <ul>
+     *     <li>username    : ユーザ名
+     *     <li>email       : E-mailアドレス
+     *     <li>options     : オプション
+     *     <li>groups      : 所属グループ一覧 (注: '_id' を指定して検索した場合のみ。オフライン機能有効時は無効。)
+     *     <li>createdAt   : ユーザ登録日付
+     *     <li>updatedAt   : 最終更新日付
+     *     <li>lastLoginAt : 最終ログイン日時(マスターキー使用時のみ)
+     *     <li>etag        : ETag
+     *     <li>federated   : 外部認証連携有無
+     *     <li>primaryLinkedUserId : プライマリリンクユーザID
+     *     </ul>
+     *     </li>
+     *
+     *     <li>conditions.countQuery が true の場合、以下要素を持つ JSON オブジェクト。
+     *     <ul>
+     *     <li>users : 取得したユーザオブジェクトインスタンスの配列。内容は上記配列と同じ。
+     *     <li>count : 全件数
+     *     </ul>
+     *     </li>
+     * </ul>
+     *
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static query(conditions: UserQuery, callbacks?: Callbacks): Promise<User[]> { return null; }
 
@@ -972,19 +970,19 @@ export class User implements UserJson {
      * (※) ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
      * <p>
      * カレントユーザ以外を更新する場合は、SDK 初期化時のアプリケーションキーにアプリケーションのマスターキーを指定すること。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(user)
-     *             user : 更新したユーザオブジェクトのインスタンス
-     *             処理の成功により、以下のユーザオブジェクトのプロパティが更新される
-     *                 (プロパティ名)
-     *                 username    : 更新されたユーザ名
-     *                 email       : 更新されたE-mailアドレス
-     *                 updatedAt   : 最終更新日付
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 更新したユーザオブジェクトのインスタンス。
+     *           処理の成功により、以下のユーザオブジェクトのプロパティが更新される
+     *     <ul>
+     *     <li>username    : 更新されたユーザ名
+     *     <li>email       : 更新されたE-mailアドレス
+     *     <li>updatedAt   : 最終更新日付
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static update(user: User, callbacks?: Callbacks): Promise<User> { return null; }
 
@@ -1072,12 +1070,7 @@ export class User implements UserJson {
      * ユーザID は、ユーザ登録が成功した場合にSDK がユーザプロパティに設定する。
      * <p>
      * カレントユーザ以外を削除する場合は、SDK 初期化時のアプリケーションキーにアプリケーションのマスターキーを指定すること。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success()
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      * @since v4.0.1
      */
@@ -1166,12 +1159,7 @@ export class User implements UserJson {
      *     <li>email       : E-mailアドレス
      *     <li>username    : ユーザ名
      * </ul>
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success()
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     static resetPassword(userInfo: UserJson, callbacks?: Callbacks): Promise<void> { return null; }
@@ -1243,15 +1231,13 @@ export class User implements UserJson {
      * </ul>
      * <p>
      * カレントユーザ以外のリンク情報を取得する場合は、SDK 初期化時のアプリケーションキーにアプリケーションのマスターキーを指定すること。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(links)
-     *             links : リンク情報 (Nebula.AccountLink インスタンス) の配列
-     *             リンク情報が存在しない場合は、空が返る。
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: リンク情報(Nebula.AccountLink インスタンス) の配列。リンク情報が存在しない場合は空配列。
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      * @since v6.5.0
      */
     static getAccountLinks(user: User, callbacks?: Callbacks): Promise<AccountLink[]> { return null; }
@@ -1326,11 +1312,7 @@ export class User implements UserJson {
      * @param {string} linkedUserId 削除するリンクユーザID。<br>
      * null は指定できない。<br>
      * user の primaryLinkedUserId と一致した場合は、例外をスローする。
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *   success の引数は無し。
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      * @since v6.5.0
      */

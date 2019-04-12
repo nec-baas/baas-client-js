@@ -132,19 +132,23 @@ export class CustomApi {
      * @memberOf CustomApi
      * @description カスタムAPIの呼び出し
      * @param {Object} data API呼び出しデータ
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・メソッドが GET/DELETE の場合、データはクエリパラメータに追加格納される。
-     *   メソッドが POST/PUT の場合、データはボディに JSON 形式で格納される。
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通り。
-     *         success(response)
-     *             response : サーバ応答データ。テキストデータの場合は文字列(JSONの場合でも)。
-     *                        ファイルの場合は Blob または Buffer オブジェクト。
-     *                        レスポンスヘッダ受信設定をしている場合は、オブジェクトが返却され、
-     *                        body にサーバ応答データ、headers にヘッダが格納される。
-     * </pre>
+     * <ul>
+     *   <li>メソッドが GET/DELETE の場合、データはクエリパラメータに追加格納される。
+     *   <li>メソッドが POST/PUT の場合、データはボディに JSON 形式で格納される。
+     * </ul>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: サーバ応答データ。
+     *     <ul>
+     *     <li>テキストデータの場合は文字列(JSONの場合でも)。
+     *     <li>ファイルの場合は Blob または Buffer オブジェクト。
+     *     <li>レスポンスヘッダ受信設定をしている場合は、オブジェクトが返却され、
+     *       body にサーバ応答データ、headers にヘッダが格納される。</li>
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     execute(data: object, callbacks?: Callbacks): Promise<string|object> {
         return this._execute(data, false, callbacks);
@@ -155,42 +159,42 @@ export class CustomApi {
      * @description
      *      カスタムAPIの呼び出し(raw message版)。Node.js専用。
      *      <p>HTTP/1.1において、処理が成功した場合、Promise には http.IncomingMessage が返される。
-     *      <p>http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
-     *      <p>データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
+     *      http.IncomingMessage に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *      データ読み込み時は http.IncomingMessage よりレスポンスのステータスを取得、判定を行うこと。
      *      <p>リクエスト送信が失敗した場合、Promise には error が返される。
      *      <p>HTTP/2において、処理が成功した場合、Promise には http2.ClientHttp2Stream が返される。
-     *      <p>ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
-     *      <p>HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
+     *      ClientHttp2Stream に対するイベントハンドラを自身で設定、適切にハンドリングすること。
+     *      HTTP/2のステータスコードを取得するには、'response'イベントの':status'を参照する。
      * @example
-     *      var customApi = ....;
+     * var customApi = ....;
      *
-     *      // for HTTP/1.1
-     *      // pipe()を使用する場合
-     *      var writable = fs.createWriteStream(....);
-     *      customApi.executeRaw()
-     *          .then((message) => {
-     *              message.pipe(writable);
-     *          });
+     * // for HTTP/1.1
+     * // pipe()を使用する場合
+     * var writable = fs.createWriteStream(....);
+     * customApi.executeRaw()
+     *     .then((message) => {
+     *         message.pipe(writable);
+     *     });
      *
-     *      // 'data'を実装する場合
-     *      customApi.executeRaw()
-     *          .then((message) => {
-     *              message.on('data', () => {....});
-     *              message.on('end', () => {....});
-     *              message.on('error', () => {....});
-     *              message.on('close', () => {....});
-     *          });
+     * // 'data'を実装する場合
+     * customApi.executeRaw()
+     *     .then((message) => {
+     *         message.on('data', () => {....});
+     *         message.on('end', () => {....});
+     *         message.on('error', () => {....});
+     *         message.on('close', () => {....});
+     *     });
      *
-     *      // for HTTP/2
-     *      var statusCode;
-     *      customApi.executeRaw()
-     *          .then((message) => {
-     *              message.on('response', (headers, flags) => { statusCode = headers[':status'] });
-     *              message.on('data', () => {....});
-     *              message.on('end', () => {....});
-     *              message.on('error', () => {....});
-     *              message.on('close', () => {....});
-     *          });
+     * // for HTTP/2
+     * var statusCode;
+     * customApi.executeRaw()
+     *     .then((message) => {
+     *         message.on('response', (headers, flags) => { statusCode = headers[':status'] });
+     *         message.on('data', () => {....});
+     *         message.on('end', () => {....});
+     *         message.on('error', () => {....});
+     *         message.on('close', () => {....});
+     *     });
      * @param {Object} data API呼び出しデータ
      * @return {Promise} Promise
      * @since 7.5.0

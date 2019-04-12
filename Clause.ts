@@ -13,7 +13,7 @@ export interface ClauseJson extends JsonObject {
  * @classdesc オブジェクト検索条件 クラス
  * @description Clause インスタンスを生成する
  * @example
- *     var clause = new Nebula.Clause();
+ * var clause = new Nebula.Clause();
  */
 export class Clause {
     _clause: ClauseJson;
@@ -69,7 +69,7 @@ export class Clause {
      * @description
      *      (key == value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.equals("score", 80);
+     * var clause = Nebula.Clause.equals("score", 80);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -84,7 +84,7 @@ export class Clause {
      * @description
      *      (key == value) の条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().equals("score", 80);
+     * var clause = new Nebula.Clause().equals("score", 80);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -102,7 +102,7 @@ export class Clause {
      * @description
      *      (key != value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.notEquals("name", "apple");
+     * var clause = Nebula.Clause.notEquals("name", "apple");
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -116,7 +116,7 @@ export class Clause {
      * @description
      *      (key != value) の条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().notEquals("name", "apple");
+     * var clause = new Nebula.Clause().notEquals("name", "apple");
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -130,7 +130,7 @@ export class Clause {
      * @description
      *      (key < value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.lessThan("score", 30);
+     * var clause = Nebula.Clause.lessThan("score", 30);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -144,7 +144,7 @@ export class Clause {
      * @description
      *      (key < value) の条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().lessThan("score", 30);
+     * var clause = new Nebula.Clause().lessThan("score", 30);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -158,7 +158,7 @@ export class Clause {
      * @description
      *      (key <= value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.lessThanOrEqual("score", 30);
+     * var clause = Nebula.Clause.lessThanOrEqual("score", 30);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -172,7 +172,7 @@ export class Clause {
      * @description
      *      (key <= value) の条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().lessThanOrEqual("score", 30);
+     * var clause = new Nebula.Clause().lessThanOrEqual("score", 30);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -186,7 +186,7 @@ export class Clause {
      * @description
      *      (key > value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.greaterThan("number", 1000);
+     * var clause = Nebula.Clause.greaterThan("number", 1000);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -200,7 +200,7 @@ export class Clause {
      * @description
      *      (key > value) の条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().greaterThan("number", 1000);
+     * var clause = new Nebula.Clause().greaterThan("number", 1000);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -214,7 +214,7 @@ export class Clause {
      * @description
      *      (key >= value) の条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.greaterThanOrEqual("number", 1000);
+     * var clause = Nebula.Clause.greaterThanOrEqual("number", 1000);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -228,7 +228,7 @@ export class Clause {
      * @description
      *      (key >= value) の条件を追加すうｒ
      * @example
-     *      var clause = Nebula.Clause.greaterThanOrEqual("number", 1000);
+     * var clause = Nebula.Clause.greaterThanOrEqual("number", 1000);
      * @param {String} key 比較するキー名
      * @param {Object} value 比較する値
      * @return {Clause} this
@@ -244,8 +244,8 @@ export class Clause {
      * @name Clause.in
      * @function
      * @example
-     *      var targets = [1000, 1003, 1005];
-     *      var clause = Nebula.Clause.in("number", targets);
+     * var targets = [1000, 1003, 1005];
+     * var clause = Nebula.Clause.in("number", targets);
      * @param {String} key 比較するキー名
      * @param {Object} values 比較する値の配列
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -261,8 +261,8 @@ export class Clause {
      * @name Clause#in
      * @function
      * @example
-     *      var targets = [1000, 1003, 1005];
-     *      var clause = new Nebula.Clause().in("number", targets);
+     * var targets = [1000, 1003, 1005];
+     * var clause = new Nebula.Clause().in("number", targets);
      * @param {String} key 比較するキー名
      * @param {Object} values 比較する値の配列
      * @return {Clause} this
@@ -276,8 +276,8 @@ export class Clause {
      * @description
      *      key の値が values で指定されたすべてを含んでいるかの条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var targets = ["ssl", "security"];
-     *      var clause = Nebula.Clause.all("tags", targets);
+     * var targets = ["ssl", "security"];
+     * var clause = Nebula.Clause.all("tags", targets);
      * @param {String} key 比較するキー名
      * @param {Object} values 比較する値の配列
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -291,8 +291,8 @@ export class Clause {
      * @description
      *      key の値が values で指定されたすべてを含んでいるかの条件を追加する
      * @example
-     *      var targets = ["ssl", "security"];
-     *      var clause = new Nebula.Clause().all("tags", targets);
+     * var targets = ["ssl", "security"];
+     * var clause = new Nebula.Clause().all("tags", targets);
      * @param {String} key 比較するキー名
      * @param {Object} values 比較する値の配列
      * @return {Clause} this
@@ -306,7 +306,7 @@ export class Clause {
      * @description
      *      key で示したフィールドが存在するかどうかを示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.exist("tags", targets);
+     * var clause = Nebula.Clause.exist("tags", targets);
      * @param {String} key 比較するキー名
      * @param {Boolean} value 存在を確認する場合は true、 存在しないことを確認する場合は false を指定する。
      * @return {Clause} Nebula.Clause インスタンスを返す。
@@ -320,7 +320,7 @@ export class Clause {
      * @description
      *      key で示したフィールドが存在するかどうかの条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().exist("tags", targets);
+     * var clause = new Nebula.Clause().exist("tags", targets);
      * @param {String} key 比較するキー名
      * @param {Boolean} value 存在を確認する場合は true、 存在しないことを確認する場合は false を指定する。
      * @return {Clause} this
@@ -338,12 +338,14 @@ export class Clause {
      * @description
      *      正規表現による検索条件を示す Nebula.Clause インスタンスを生成する
      * @example
-     *      var clause = Nebula.Clause.regex("name", "abc*");
+     * var clause = Nebula.Clause.regex("name", "abc*");
      * @param {String} key 比較するキー名
      * @param {String} expression Perl互換の正規表現の条件文字列
      * @param {Object} option オプション
-     *      <br />option には必要に応じて以下の値を指定してもよい。(省略可能)
-     *      <pre>Nebula.RegexOption.CASE_INSENSITIVITY   大文字小文字を区別しない</pre>
+     * <p>option には必要に応じて以下の値を指定してもよい。(省略可能)
+     * <ul>
+     *     <li>Nebula.RegexOption.CASE_INSENSITIVITY   大文字小文字を区別しない</li>
+     * </ul>
      * @return {Clause} Nebula.Clause インスタンスを返す。
      */
     static regex(key: string, expression: string, option?: string): Clause {
@@ -355,12 +357,14 @@ export class Clause {
      * @description
      *      正規表現による検索条件を追加する
      * @example
-     *      var clause = new Nebula.Clause().regex("name", "abc*");
+     * var clause = new Nebula.Clause().regex("name", "abc*");
      * @param {String} key 比較するキー名
      * @param {String} expression Perl互換の正規表現の条件文字列
      * @param {Object} option オプション
-     *      <br />option には必要に応じて以下の値を指定してもよい。(省略可能)
-     *      <pre>Nebula.RegexOption.CASE_INSENSITIVITY   大文字小文字を区別しない</pre>
+     * <p>
+     * <ul>option には必要に応じて以下の値を指定してもよい。(省略可能)
+     *     <li>Nebula.RegexOption.CASE_INSENSITIVITY   大文字小文字を区別しない</li>
+     * </ul>
      * @return {Clause} this
      */
     regex(key: string, expression: string, option?: string): Clause {
@@ -372,8 +376,8 @@ export class Clause {
      * @description
      *      Nebula.Clause インスタンスの key の条件を反転させる
      * @example
-     *      var clause = Nebula.Clause.exist("tags", targets);
-     *      clause.not("tags");
+     * var clause = Nebula.Clause.exist("tags", targets);
+     * clause.not("tags");
      * @param {String} key 比較するキー名
      * @return {Clause} Nebula.Clause インスタンス(this)を返す。
      */
@@ -406,12 +410,12 @@ export class Clause {
      * @description
      *      複数の条件を AND条件で結合する
      * @example
-     *      var clause1 = Nebula.Clause.equals("name", "AAA");
-     *      var clause2 = Nebula.Clause.lessThan("score", 50);
-     *      var clause3 = Nebula.Clause.greaterThan("score", 30);
-     *      var clause = Nebula.Clause.and(clause1, clause2, clause3);
+     * var clause1 = Nebula.Clause.equals("name", "AAA");
+     * var clause2 = Nebula.Clause.lessThan("score", 50);
+     * var clause3 = Nebula.Clause.greaterThan("score", 30);
+     * var clause = Nebula.Clause.and(clause1, clause2, clause3);
      * @param {Clause} clauses AND条件をとるNebula.Clauseインスタンス
-     *      <br />複数のインスタンスを指定できる
+     * <p>複数のインスタンスを指定できる
      * @return {Clause} Nebula.Clause インスタンスを返す。
      */
     static and(...clauses: Clause[]): Clause {
@@ -424,12 +428,12 @@ export class Clause {
      * @description
      *      複数の条件を OR条件で結合する
      * @example
-     *      var clause1 = Nebula.Clause.equals("name", "AAA");
-     *      var clause2 = Nebula.Clause.lessThan("score", 50);
-     *      var clause3 = Nebula.Clause.greaterThan("score", 30);
-     *      var clause = Nebula.Clause.or(clause1, clause2, clause3);
+     * var clause1 = Nebula.Clause.equals("name", "AAA");
+     * var clause2 = Nebula.Clause.lessThan("score", 50);
+     * var clause3 = Nebula.Clause.greaterThan("score", 30);
+     * var clause = Nebula.Clause.or(clause1, clause2, clause3);
      * @param {Clause} clauses OR条件をとるNebula.Clauseインスタンス
-     *      <br />複数のインスタンスを指定できる
+     * <p>複数のインスタンスを指定できる
      * @return {Clause} Nebula.Clause インスタンスを返す。
      */
     static or(...clauses: Clause[]): Clause {

@@ -9,11 +9,11 @@ export interface SseFieldsType {
  * @memberOf PushSender
  * @description SSE用Push送信パラメータ
  * @example
- *      var sse = new Nebula.PushSender.SseFields();
- *      sse.eventId = "event01";
- *      sse.eventType = "Information";
- *      var push = new Nebula.PushSender();
- *      push.sseFields = sse;
+ * var sse = new Nebula.PushSender.SseFields();
+ * sse.eventId = "event01";
+ * sse.eventType = "Information";
+ * var push = new Nebula.PushSender();
+ * push.sseFields = sse;
  * @since v4.0.0
  */
 export class SseFields {

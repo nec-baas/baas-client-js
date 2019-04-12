@@ -18,7 +18,7 @@ export class ObjectQuery {
      * @classdesc オブジェクトクエリ
      * @description オブジェクトクエリを生成する
      * @example
-     *     var query = new Nebula.ObjectQuery();
+     * var query = new Nebula.ObjectQuery();
      */
     constructor() {
         this._clause = null;
@@ -289,13 +289,13 @@ export class ObjectQuery {
      * @description
      *      検索条件を設定する
      * @example
-     *      var clause = Nebula.Clause.lessThan("score", 50);
-     *      var query = new Nebula.ObjectQuery();
-     *      query.setClause(clause);
+     * var clause = Nebula.Clause.lessThan("score", 50);
+     * var query = new Nebula.ObjectQuery();
+     * query.setClause(clause);
      * @param {Clause} clause Nebula.Clauseインスタンス
-     *      <br/>null を指定した場合は、すでに設定済みの検索条件をクリアする。
-     *      <br/>再度、本メソッドを呼び出した場合、検索条件は上書きされる。
-     *      <br/>デフォルトでは、null が設定されている。
+     * <p>null を指定した場合は、すでに設定済みの検索条件をクリアする。
+     * <p>検索条件がすでに設定されていた場合、検索条件は上書きされる。
+     * デフォルトでは、null が設定されている。
      * @return {ObjectQuery} this
      */
     setClause(clause: Clause): ObjectQuery {
@@ -317,13 +317,13 @@ export class ObjectQuery {
      *     .setClause(clause)
      *     .setLimit(10);
      * @param {number} limit 検索上限数。
-     * <p>
-     * -1 以上の値を指定できる。
-     * -1を設定した場合は「制限なし」となる。
-     * ただし、サーバ側のコンフィグレーションによっては、上限値が制限されている場合がある。この場合、クエリを実行するとサーバからエラーが返る。
-     * デフォルトでは、-1 が設定されている。
-     * <p>
-     * 範囲外の値が設定された場合は、例外をスローする。
+     * <ul>
+     *   <li>-1 以上の値を指定できる。
+     *   <li>-1を設定した場合は「制限なし」となる。
+     *   ただし、サーバ側のコンフィグレーションによっては、上限値が制限されている場合がある。この場合、クエリを実行するとサーバからエラーが返る。
+     *   <li>デフォルトでは、-1 が設定されている。
+     *   <li>範囲外の値が設定された場合は、例外をスローする。
+     * </ul>
      * @return {ObjectQuery} this
      */
     setLimit(limit: number): ObjectQuery {
@@ -461,28 +461,24 @@ export class ObjectQuery {
      * @memberOf ObjectQuery
      * @description
      *      クエリ件数取得フラグを設定する.
-     *      <br><br>
+     *      <br>
      *      クエリ件数取得フラグは、Nebula.ObjectBucket.query() を実行したときに
      *      クエリに合致した件数を取得するかどうかを表し、trueの場合は取得することを示す。
      *      <br>
      *      クエリ件数取得フラグのデフォルト値は、falseである。
      * @example
-     *      var bucket = ....;
-     *      var clause = Nebula.Clause.lessThan("score", 50);
-     *      var conditions = new Nebula.ObjectQuery();
-     *      conditions.setClause(clause);
-     *      conditions.setLimit(10);
-     *      conditions._setCountQuery(true);
-     *      ....
-     *      callbacks = {
-     *          success: function(objects, count) {
-     *              // count にクエリ件数が格納され、は検索条件数には依存せず、
-     *              // 全体でクエリ条件に合致するオブジェクトの数がcountに格納される。
-     *              // (objectsに格納されてるオブジェクトの数とcountは一致しないことがある)
-     *          },
-     *          error: function(err) {....}
-     *      };
-     *      conditions.query(conditions, callbacks);
+     * var bucket = ....;
+     * var clause = Nebula.Clause.lessThan("score", 50);
+     * var conditions = new Nebula.ObjectQuery();
+     * conditions.setClause(clause);
+     * conditions.setLimit(10);
+     * conditions._setCountQuery(true);
+     * ....
+     * conditions.query(conditions)
+     *     .then(function(result) {
+     *         // result.count に全件数、result.objects にオブジェクト配列が返る
+     *     })
+     *     .catch(function(err) {...})
      * @param {Boolean} countQuery クエリ件数取得フラグ
      *      <br/>true または false を指定する。
      * @private
@@ -496,29 +492,13 @@ export class ObjectQuery {
         return this;
     }
 
-
     /**
      * @function
      * @memberOf ObjectQuery
      * @description
      *      クエリ件数取得フラグを取得する.
-     *      <br><br>
+     *      <br>
      *      クエリ件数取得フラグのデフォルト値は、falseである。
-     * @example
-     *      var bucket = ....;
-     *      ....
-     *      var conditions = new Nebula.ObjectQuery();
-     *      conditions.setCountQuery(true);
-     *      ....
-     *      callbacks = {
-     *          success: function(objects, count) {
-     *              if (conditions.isCountQuery()) {
-     *                  ....
-     *              }
-     *          },
-     *          error: function(err) {....}
-     *      };
-     *      conditions.query(conditions, callbacks);
      * @return
      *      {Boolean} クエリ件数取得フラグ(trueまたはfalse)を返す
      * @private
@@ -533,15 +513,15 @@ export class ObjectQuery {
      * @description
      *      プロジェクションを指定する。
      * @example
-     *      var clause = Nebula.Clause.lessThan("score", 50);
-     *      var projection = {"score":1};
-     *      var query = new Nebula.ObjectQuery();
-     *      query.setClause(clause);
-     *      query.setProjection(projection);
+     * var clause = Nebula.Clause.lessThan("score", 50);
+     * var projection = {"score":1};
+     * var query = new Nebula.ObjectQuery();
+     * query.setClause(clause);
+     * query.setProjection(projection);
      * @param {Object} projectionJson
-     *      <br/>null を指定した場合は、すでに設定済みの値をクリアする。
-     *      <br/>再度、本メソッドを呼び出した場合は上書きされる。
-     *      <br/>デフォルトでは、null が設定されている。
+     *      <p>null を指定した場合は、すでに設定済みの値をクリアする。
+     *      <p>設定済み状態で、本メソッドを呼び出した場合は上書きされる。
+     *      デフォルトでは、null が設定されている。
      * @return {ObjectQuery} this
      */
     setProjection(projectionJson: JsonObject): ObjectQuery {
