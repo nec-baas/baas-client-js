@@ -216,6 +216,41 @@ export class FileBucket extends BaseBucket {
     /**
      * @memberOf FileBucket
      * @description
+     *      ファイルバケットのACLレスモード有効/無効を設定する。
+     *      <p>本メソッドを呼び出さない場合、ACLレスモードはデフォルト無効。
+     *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
+     *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。
+     * @example
+     * var bucket = ....;
+     * ....
+     * var noAcl = true;
+     * bucket.setNoAcl(noAcl);
+     * @param noAcl {boolean} ACLレスモードを有効にする場合はtrueを指定する。
+     * @return {FileBucket} this
+     */
+    setNoAcl(noAcl: boolean): FileBucket {
+        super.setNoAcl(noAcl);
+        return this;
+    }
+
+    /**
+     * @memberOf FileBucket
+     * @description
+     *      ファイルバケットのACLレスモード有効/無効を取得する。
+     * @example
+     * var bucket = ....;
+     * ....
+     * var noAcl = bucket.isNoAcl();
+     * @return
+     *      {boolean} ファイルバケットがACLレスモード有効の場合はtrueを返す。
+     */
+    isNoAcl(): boolean {
+        return super.isNoAcl();
+    }
+
+    /**
+     * @memberOf FileBucket
+     * @description
      *      ファイルバケットのコンテンツACLを設定する.
      *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
      *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。

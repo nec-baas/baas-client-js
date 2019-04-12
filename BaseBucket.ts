@@ -17,6 +17,7 @@ export class BaseBucket {
     _type: string;
     _name: string;
     _acl: Acl;
+    _noAcl: boolean;
     _contentAcl: Acl;
     _description: string;
     _mode: number;
@@ -33,6 +34,7 @@ export class BaseBucket {
         this._type = type;
         this._name = name;
         this._acl = null;
+        this._noAcl = null;
         this._contentAcl = null;
         this._description = null;
 
@@ -225,6 +227,10 @@ export class BaseBucket {
             body.bucketMode = this.getBucketMode();
         }
 
+        if (this._noAcl != null) {
+            body.noAcl = this._noAcl;
+        }
+
         req.setData(body);
         nbLogger("BaseBucket.saveBucket(), body=" + JSON.stringify(body));
 
@@ -317,6 +323,22 @@ export class BaseBucket {
      */
     getAcl(): Acl {
         return this._acl;
+    }
+
+    /**
+     * @description ACLレスモードの設定
+     * @private
+     */
+    setNoAcl(noAcl: boolean) {
+        this._noAcl = noAcl;
+    }
+
+    /**
+     * @description ACLレスモードの取得
+     * @private
+     */
+    isNoAcl(): boolean {
+        return this._noAcl;
     }
 
     /**

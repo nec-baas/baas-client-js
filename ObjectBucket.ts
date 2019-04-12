@@ -92,7 +92,7 @@ export class ObjectBucket extends BaseBucket {
      * @classdesc オブジェクトバケット
      * @description ObjectBucket インスタンスを生成する
      * @example
-     *    var bucket = new Nebula.ObjectBucket("bucket1");
+     * var bucket = new Nebula.ObjectBucket("bucket1");
      * @param {string} name バケットの名前
      * @param {number} mode バケットモード。
      * <p>
@@ -114,29 +114,11 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットを取得する
      * @example
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(err) {....}
-     *      };
-     *      Nebula.ObjectBucket.loadBucket("Books", callbacks);
+     * Nebula.ObjectBucket.loadBucket("Books", callbacks)
+     *     .then(function(bucket) { ... })
+     *     .catch(function(err) { ... });
      * @param {string} name 取得するバケットの名前
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.ObjectBucketのインスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 取得に失敗したバケットの名前(nameと同じ)
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @param {number} mode バケットモード
      * <p>
      * バケットモードには、以下のいずれかを指定する。
@@ -147,7 +129,20 @@ export class ObjectBucket extends BaseBucket {
      * </ul>
      * modeを省略した場合や上記以外が指定された場合は、オンラインモードとして処理する。
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
-     *      ただし、modeを指定する場合は、callbacksにnullを指定すること(省略不可)
+     *      ただし、modeを指定する場合は、callbacksにnullを指定すること(省略不可)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.ObjectBucketのインスタンス
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 取得に失敗したバケットの名前(nameと同じ)
+     *     }
+     * </pre>
+     * </ul>
      */
     static loadBucket(name: string, callbacks?: Callbacks, mode?: number): Promise<ObjectBucket> { return null; }
 
@@ -161,19 +156,16 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットのバケット名一覧を取得する
      * @example
-     *      callbacks = {
-     *          success: function(bucketList) {....},
-     *          error: function(error) {....}
-     *      };
-     *      Nebula.ObjectBucket.getBucketList(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucketList)
-     *             bucketList : バケットの名前の配列
-     * </pre>
+     * Nebula.ObjectBucket.getBucketList()
+     *     .then(function(bucketList) { ... })
+     *     .catch(function(err) { ... });
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: バケットの名前の配列
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static getBucketList(callbacks?: Callbacks): Promise<string[]> { return null; }
 
@@ -188,19 +180,16 @@ export class ObjectBucket extends BaseBucket {
      *      ローカル上に保存されているオブジェクトバケットのバケット名一覧を取得する.
      *      本APIはオフラインのみで利用可能
      * @example
-     *      callbacks = {
-     *          success: function(bucketList) {....},
-     *          error: function(error) {....}
-     *      };
-     *      Nebula.ObjectBucket.getLocalBucketList(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucketList)
-     *             bucketList : バケットの名前の配列
-     * </pre>
+     * Nebula.ObjectBucket.getLocalBucketList()
+     *     .then(function(bucketList) { ... })
+     *     .catch(function(err) { ... });
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: バケットの名前の配列
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     static getLocalBucketList(callbacks?: Callbacks): Promise<string[]> { return null; }
 
@@ -215,31 +204,24 @@ export class ObjectBucket extends BaseBucket {
      *      オブジェクトバケットを保存する.
      *      バケットはテナント毎に作成される。同一テナント内では同一名称のバケットを複数作成できない。
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Person");
-     *      ....
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(bucket, err) {....}
-     *      };
-     *      bucket.saveBucket(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.ObjectBucket インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
+     * var bucket = new Nebula.ObjectBucket("Person");
+     * ....
+     * bucket.saveBucket()
+     *     .then(function(bucket) {...})
+     *     .catch(function(err) {...})
+     * @param {Callbacks} callbacks コールバック (Option)
+     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.ObjectBucketのインスタンス
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
      *              {
      *                  "status"        : ステータスコード,
      *                  "statusText"    : エラーメッセージ,
      *                  "responseText"  : レスポンスメッセージ,
      *                  "data"          : Nebula.ObjectBucket インスタンス
      *              }
-     * </pre>
-     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * </ul>
      */
     saveBucket(callbacks?: Callbacks): Promise<ObjectBucket> {
         return super.saveBucket(callbacks) as Promise<ObjectBucket>;
@@ -251,31 +233,30 @@ export class ObjectBucket extends BaseBucket {
      *      オブジェクトバケットを削除する.
      *      バケットを削除する場合、事前にバケット内に格納されている全データを削除しておく必要がある。
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Person");
-     *      ....
-     *      callbacks = {
-     *          success: function(bucket) {....},
-     *          error: function(bucket, err) {....}
-     *      };
-     *      bucket.deleteBucket(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(bucket)
-     *             bucket : Nebula.ObjectBucket インスタンス
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : Nebula.ObjectBucket インスタンス
-     *              }
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket("Person");
+     * ....
+     * callbacks = {
+     *     success: function(bucket) {....},
+     *     error: function(bucket, err) {....}
+     * };
+     * bucket.deleteBucket()
+     *     .then(function(bucket) {...})
+     *     .catch(function(err) {...})
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: Nebula.ObjectBucketのインスタンス
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : Nebula.ObjectBucket インスタンス
+     *     }
+     * </pre>
+     * </ul>
      */
     deleteBucket(callbacks?: Callbacks): Promise<ObjectBucket> {
         return super.deleteBucket(callbacks) as Promise<ObjectBucket>;
@@ -289,12 +270,12 @@ export class ObjectBucket extends BaseBucket {
      * 本メソッドを呼び出しただけでは、サーバに格納されているオブジェクトバケットは更新されない。
      * サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      var acl = new Nebula.Acl();
-     *      ....
-     *      acl.addEntry(....);
-     *      ....
-     *      bucket.setAcl(acl);
+     * var bucket = ....;
+     * var acl = new Nebula.Acl();
+     * ....
+     * acl.addEntry(....);
+     * ....
+     * bucket.setAcl(acl);
      * @param {Acl} acl Nebula.ACL のインスタンス
      * @return {ObjectBucket} this
      */
@@ -310,9 +291,9 @@ export class ObjectBucket extends BaseBucket {
      *      <p>
      *      オブジェクトバケットのACLを取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var acl = bucket.getAcl();
+     * var bucket = ....;
+     * ....
+     * var acl = bucket.getAcl();
      * @return
      *      {Acl} オブジェクトバケットのACL
      */
@@ -323,16 +304,51 @@ export class ObjectBucket extends BaseBucket {
     /**
      * @memberOf ObjectBucket
      * @description
+     *      オブジェクトバケットのACLレスモード有効/無効を設定する。
+     *      <p>本メソッドを呼び出さない場合、ACLレスモードはデフォルト無効。
+     *      <p>本メソッドを呼び出しただけでは、サーバに格納されているファイルバケットは更新されない。
+     *      <br/>サーバと同期するには、saveBucket()を呼び出す必要がある。
+     * @example
+     * var bucket = ....;
+     * ....
+     * var noAcl = true;
+     * bucket.setNoAcl(noAcl);
+     * @param noAcl {boolean} ACLレスモードを有効にする場合はtrueを指定する。
+     * @return {ObjectBucket} this
+     */
+    setNoAcl(noAcl: boolean): ObjectBucket {
+        super.setNoAcl(noAcl);
+        return this;
+    }
+
+    /**
+     * @memberOf ObjectBucket
+     * @description
+     *      オブジェクトバケットのACLレスモード有効/無効を取得する。
+     * @example
+     * var bucket = ....;
+     * ....
+     * var noAcl = bucket.isNoAcl();
+     * @return
+     *      {boolean} オブジェクトバケットがACLレスモード有効の場合はtrueを返す。
+     */
+    isNoAcl(): boolean {
+        return super.isNoAcl();
+    }
+
+    /**
+     * @memberOf ObjectBucket
+     * @description
      *      オブジェクトバケットのコンテンツACLを設定する。
      *      <p>本メソッドを呼び出しただけでは、サーバに格納されているオブジェクトバケットは更新されない。
      *      サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      var acl = new Nebula.Acl();
-     *      ....
-     *      acl.addEntry(....);
-     *      ....
-     *      bucket.setContentAcl(acl);
+     * var bucket = ....;
+     * var acl = new Nebula.Acl();
+     * ....
+     * acl.addEntry(....);
+     * ....
+     * bucket.setContentAcl(acl);
      * @param {Acl} acl Nebula.ACL のインスタンス
      * @return {ObjectBucket} this
      */
@@ -347,9 +363,9 @@ export class ObjectBucket extends BaseBucket {
      *      オブジェクトバケットのコンテンツACLを取得する。
      *      <p>オブジェクトバケットのコンテンツACLを取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var acl = bucket.getAcl();
+     * var bucket = ....;
+     * ....
+     * var acl = bucket.getAcl();
      * @return {Acl} オブジェクトバケットのコンテンツACL
      */
     getContentAcl(): Acl {
@@ -364,9 +380,9 @@ export class ObjectBucket extends BaseBucket {
      *      本メソッドを呼び出しただけでは、サーバに格納されているオブジェクトバケットは更新されない。
      *      サーバと同期するには、saveBucket()を呼び出す必要がある。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      bucket.setDescription("このバケットの説明文");
+     * var bucket = ....;
+     * ....
+     * bucket.setDescription("このバケットの説明文");
      * @param {string} description オブジェクトバケットの「説明文」
      */
     setDescription(description: string) {
@@ -380,9 +396,9 @@ export class ObjectBucket extends BaseBucket {
      *      <p>
      *      オブジェクトバケットの「説明文」を取得するには、loadBucket()を使用してサーバのバケット情報をロードしておく必要がある。
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var description = bucket.getDescription();
+     * var bucket = ....;
+     * ....
+     * var description = bucket.getDescription();
      * @return
      *      {string} オブジェクトバケットに設定されている「説明文」
      */
@@ -395,9 +411,9 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケット名を取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var bucketName = bucket.getBucketName();
+     * var bucket = ....;
+     * ....
+     * var bucketName = bucket.getBucketName();
      * @return
      *      {string} オブジェクトバケット名
      */
@@ -419,9 +435,9 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      バケットモードを取得する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var bucketMode = bucket.getBucketMode();
+     * var bucket = ....;
+     * ....
+     * var bucketMode = bucket.getBucketMode();
      * @return
      *      {number} バケットモード
      */
@@ -434,32 +450,27 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットからオブジェクトを読み込む
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(object) {....},
-     *          error: function(objectId, err) {....}
-     *      };
-     *      bucket.load("object_id", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.load("objectId")
+     *     .then(function(object) {...})
+     *     .catch(function(err) {...})
      * @param {string} objectId オブジェクトID
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(object)
-     *             object : 読み込んだオブジェクト(JSON)
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *                  "data"          : 読み込みに失敗したオブジェクトID
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 読み込んだオブジェクト(JSON)
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 読み込みに失敗したオブジェクトID
+     *     }
+     * </pre>
+     * </ul>
      */
     load(objectId: string, callbacks?: Callbacks): Promise<JsonObject> {
         nbLogger("ObjectBucket.load()");
@@ -510,31 +521,13 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットからオブジェクトを削除する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      callbacks = {
-     *          success: function(object) {....},
-     *          error: function(objectId, err) {....}
-     *      };
-     *      bucket.remove("object_id", callbacks);
+     * var bucket = ....;
+     * ....
+     * bucket.remove("objectId")
+     *     .then(function(object) {...})
+     *     .catch(function(err) {...});
      * @param {string} objectId オブジェクトID
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(objectId)
-     *             objectId : 削除に成功したオブジェクトID
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ
-     *                  "data"          : 削除に失敗したオブジェクトID
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @param {string} etag オブジェクトに含まれるETag値。
      *      <p>
      *      ETag値は、オブジェクトを新規保存した場合にサーバで追加され、
@@ -546,6 +539,19 @@ export class ObjectBucket extends BaseBucket {
      *      一致しなかった場合は、データ衝突として「409 Conflict」エラーとなり、オブジェクトは削除されない。
      *      etagを指定しなかった場合、または、nullを指定した場合は、ETag値は照合されずオブジェクトは無条件で削除される。
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 削除に成功したオブジェクトID
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 削除に失敗したオブジェクトID
+     *     }
+     * </pre>
+     * </ul>
      * @since v4.0.1
      */
     remove(objectId: string, callbacks?: Callbacks, etag?: string): Promise<string> {
@@ -621,39 +627,36 @@ export class ObjectBucket extends BaseBucket {
      * すでに存在するオブジェクトを保存する場合、オブジェクトに指定したフィールドのみが更新される。
      * 指定しないフィールドは更新されない(フィールドは削除されずそのまま残る)
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var myObj = {....};
-     *      ....
-     *      callbacks = {
-     *          success: function(object) {....},
-     *          error: function(object, err) {....}
-     *      };
-     *      bucket.save(myObj, callbacks);
+     * var bucket = ....;
+     * ....
+     * var myObj = {....};
+     * ....
+     * bucket.save(myObj)
+     *     .then(function(object) {...})
+     *     .catch(function(err) {...});
      * @param {Object} object 保存するオブジェクト
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(object)
-     *             object : 保存に成功したオブジェクト(JSON)
-     *                      新規オブジェクトの場合は、以下のフィールドが追加される。
-     *                          _id : オブジェクトID
-     *                          createdAt : 作成日時
-     *                          updatedAt : 更新日時
-     *                          ACL : このオブジェクトのACL。指定しなかった場合は追加される
-     * ・処理が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(err)
-     *             err : エラー要因がJSON 形式で返る。
-     *              {
-     *                  "status"        : ステータスコード,
-     *                  "statusText"    : エラーメッセージ,
-     *                  "responseText"  : レスポンスメッセージ,
-     *                  "data"          : 保存に失敗したオブジェクトID
-     *              }
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 保存に成功したオブジェクト(JSON)。新規オブジェクトの場合は、以下のフィールドが追加される。
+     * <ul>
+     *     <li>_id : オブジェクトID
+     *     <li>createdAt : 作成日時
+     *     <li>updatedAt : 更新日時
+     *     <li>ACL : このオブジェクトのACL。指定しなかった場合は追加される
+     * </ul>
+     * <li>失敗時: 以下JSON形式で表されるエラー要因
+     * <pre>
+     *     {
+     *         "status"        : ステータスコード,
+     *         "statusText"    : エラーメッセージ,
+     *         "responseText"  : レスポンスメッセージ,
+     *         "data"          : 保存に失敗したオブジェクト
+     *     }
+     * </pre>
+     * </ul>
+     * @see #insert
      */
     save(object: JsonObject, callbacks?: Callbacks): Promise<JsonObject> {
         nbLogger("ObjectBucket.save()");
@@ -770,24 +773,21 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットからオブジェクトを検索する
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var query = new Nebula.ObjectQuery();
-     *      ....
-     *      callbacks = {
-     *          success: function(objects) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.query(query, callbacks);
+     * var bucket = ....;
+     * ....
+     * var query = new Nebula.ObjectQuery();
+     * ....
+     * bucket.query(query, callbacks)
+     *     .then(function(objects) {...})
+     *     .catch(function(err) {...});
      * @param {ObjectQuery} aQuery Nebula.ObjectQuery インスタンス
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(objects)
-     *             objects : オブジェクト(JSON)の配列
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: オブジェクト(JSON)の配列</li>
+     * <li>失敗時: エラー要因(JSON)</li>
+     * </ul>
      */
     query(aQuery: ObjectQuery, callbacks?: Callbacks): Promise<JsonObject[]> {
         return this._query(aQuery, {
@@ -801,7 +801,7 @@ export class ObjectBucket extends BaseBucket {
      *     オブジェクトバケットからオブジェクトを検索する。
      *     {@link ObjectBucket#query} と同じだが、クエリサイズの制限はない。
      * @param {ObjectQuery} aQuery ObjectQuery インスタンス
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} Promise
      * @since 5.0.0
      */
@@ -816,25 +816,25 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      オブジェクトバケットからオブジェクトを検索する(クエリ件数付き)
      * @example
-     *      var bucket = ....;
-     *      ....
-     *      var query = new Nebula.ObjectQuery();
-     *      ....
-     *      callbacks = {
-     *          success: function(result) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.query(query, callbacks);
+     * var bucket = ....;
+     * ....
+     * var query = new Nebula.ObjectQuery();
+     * ....
+     * bucket.query(query)
+     *     .then(function(result) {...})
+     *     .catch(function(err) {...});
      * @param {ObjectQuery} aQuery ObjectQuery インスタンス
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(result)
-     *             result.objects : オブジェクト(JSON)の配列
-     *             result.count   : 検索条件に合致したオブジェクトの総数
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 検索結果(JSON)。フィールドは以下の通り。
+     *     <ul>
+     *     <li>objects : オブジェクト(JSON)の配列
+     *     <li>count   : 検索条件に合致したオブジェクトの総数
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)</li>
+     * </ul>
      */
     queryWithCount(aQuery: ObjectQuery, callbacks?: Callbacks): Promise<JsonObject> {
         return this._query(aQuery, {
@@ -849,7 +849,7 @@ export class ObjectBucket extends BaseBucket {
      *     オブジェクトバケットからオブジェクトを検索する(クエリ件数付き)
      *     queryWithCount() と同じだが、クエリサイズの制限はない。
      * @param {ObjectQuery} aQuery Nebula.ObjectQuery インスタンス
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} Promise
      * @since 5.0.0
      */
@@ -961,17 +961,18 @@ export class ObjectBucket extends BaseBucket {
      * @memberOf ObjectBucket
      * @description 集計(Aggregation)を実行する (オンライン専用)。
      * @example
-     *     var bucket = ....;
-     *     var pipeline = [ { "$lookup": { ... } }, ... ];
-     *     var options = {};
-     *     bucket.aggregate(pipeline, options)
-     *         .then(function(objects) {
-     *         ...
+     * var bucket = ....;
+     * var pipeline = [ { "$lookup": { ... } }, ... ];
+     * var options = {};
+     * bucket.aggregate(pipeline, options)
+     *     .then(function(objects) {
+     *     ...
      *
      * @param {JsonObject[]} pipeline Aggregation Pipeline JSON配列
-     * <pre>
+     * <p>
      * 複数のアイテムに対して $sort を実行する場合は、以下のように単一アイテムの $sort を複数連結すること。
      * $sort に複数のアイテムを記載した場合は、ソート順序が保証されない。
+     * <pre>
      * [
      *     { "$sort": { "item1": 1 } },
      *     { "$sort": { "item2": -1 } },
@@ -1023,32 +1024,28 @@ export class ObjectBucket extends BaseBucket {
      *      同期範囲を設定する(オフライン専用)。
      *      同期するには、本APIを呼び出して同期範囲を設定すること。
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
-     *      var clause = Nebula.Clause.greaterThan("number", 99);
-     *      var scope = new Nebula.ObjectQuery();
-     *      scope.setClause(clause);
-     *      ...
-     *      bucket.setSyncScope(scope, {
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Object} scope 設定する同期範囲。Nebula.ObjectQueryのインスタンス。
-     * <pre>
-     *      ・Nebula.ObjectQueryのインスタンスで同期範囲として有効なものは、検索条件(setClause()メソッドでセット)のみである。
+     * var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
+     * var clause = Nebula.Clause.greaterThan("number", 99);
+     * var scope = new Nebula.ObjectQuery();
+     * scope.setClause(clause);
+     * ...
+     * bucket.setSyncScope(scope)
+     *     .then(function() {...})
+     *     .catch(function(err) {...});
+     * @param {ObjectQuery} scope 設定する同期範囲。Nebula.ObjectQueryのインスタンス。
+     * <ul>
+     *      <li>Nebula.ObjectQueryのインスタンスで同期範囲として有効なものは、検索条件(setClause()メソッドでセット)のみである。
      *        検索条件以外のその他(検索上限数やスキップカウントなど)は無効。
-     *      ・nullを指定した場合は、設定されている同期範囲を削除する。
-     *      ・すべてのオブジェクトを同期範囲にする場合は、インスタンスを生成しただけの空のNebula.ObjectQueryのインスタンスを指定する。
-     * </pre>
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・scope は、Nebula.ObjectQueryのインスタンスを指定する。
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     *      <li>nullを指定した場合は、設定されている同期範囲を削除する。
+     *      <li>すべてのオブジェクトを同期範囲にする場合は、インスタンスを生成しただけの空のNebula.ObjectQueryのインスタンスを指定する。
+     * </ul>
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 同期範囲。Nebula.ObjectQuery のインスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     setSyncScope(scope: ObjectQuery, callbacks?: Callbacks): Promise<void> {
         this._checkOfflineService();
@@ -1086,23 +1083,17 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      同期範囲を取得する（オフライン専用)
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
-     *      bucket.getSyncScope( {
-     *          success: function(scope) {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(scope)
-     *             scope : 取得した同期範囲。Nebula.ObjectQueryのインスタンス。
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
+     * bucket.getSyncScope()
+     *     .then(function(scope) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 同期範囲。Nebula.ObjectQuery のインスタンス
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getSyncScope(callbacks?: Callbacks): Promise<ObjectQuery> {
         this._checkOfflineService();
@@ -1150,27 +1141,23 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      衝突解決ポリシを取得する(オフライン専用)
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      ....
-     *      bucket.getResolveConflictPolicy( {
-     *          success: function(policy) {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(policy)
-     *             policy : 衝突解決ポリシ。以下のいずれかの値。
-     *                      Nebula.ObjectBucket.CONFLICT_POLICY_CLIENT ： クライアント優先で解決
-     *                      Nebula.ObjectBucket.CONFLICT_POLICY_SERVER ： サーバ優先で解決
-     *                      Nebula.ObjectBucket.CONFLICT_POLICY_MANUAL ： ユーザ通知
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket(....);
+     * ....
+     * bucket.getResolveConflictPolicy()
+     *     .then(function(policy) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 衝突解決ポリシ。以下のいずれかの値。
+     *     <ul>
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_CLIENT ： クライアント優先で解決
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_SERVER ： サーバ優先で解決
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_MANUAL ： ユーザ通知
+     *     </ul>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getResolveConflictPolicy(callbacks?: Callbacks): Promise<number> {
         nbLogger("ObjectBucket.getResolveConflictPolicy()");
@@ -1214,26 +1201,20 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      衝突解決ポリシを設定する(オフライン専用)
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      var policy = ....
-     *      ....
-     *      bucket.setResolveConflictPolicy(policy {
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
+     * var bucket = new Nebula.ObjectBucket(....);
+     * var policy = ....
+     * ....
+     * bucket.setResolveConflictPolicy(policy)
+     *     .then(function() {...})
+     *     .catch(function(err) {...});
      * @param {number} policy 設定する衝突解決ポリシ
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・policy は、以下のいずれかの衝突解決ポリシを指定する。
-     *      Nebula.ObjectBucket.CONFLICT_POLICY_CLIENT ： クライアント優先で解決
-     *      Nebula.ObjectBucket.CONFLICT_POLICY_SERVER ： サーバ優先で解決
-     *      Nebula.ObjectBucket.CONFLICT_POLICY_MANUAL ： ユーザ通知
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     * @param {Callbacks} callbacks コールバック (Option)
+     * <p>policy は、以下のいずれかの衝突解決ポリシを指定する。
+     * <ul>
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_CLIENT ： クライアント優先で解決
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_SERVER ： サーバ優先で解決
+     *     <li>Nebula.ObjectBucket.CONFLICT_POLICY_MANUAL ： ユーザ通知
+     * </ul>
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     setResolveConflictPolicy(policy: number, callbacks?: Callbacks): Promise<void> {
@@ -1271,20 +1252,12 @@ export class ObjectBucket extends BaseBucket {
      *      キャッシュデータを削除する。(オフライン専用)
      *      オフライン用データベースに保存されたバケットとバケットに保存されたオブジェクトの情報を削除する。
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      ....
-     *      bucket.removeCacheBucket({
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket(....);
+     * ....
+     * bucket.removeCacheBucket()
+     *     .then(function() {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     removeCacheBucket(callbacks?: Callbacks): Promise<void> {
@@ -1315,49 +1288,49 @@ export class ObjectBucket extends BaseBucket {
      * @description
      *      同期イベントリスナを登録する(オフライン専用)
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
-     *      bucket.setSyncEventListener({
-     *          onSyncStart: function(targetBucket) {
-     *              ....
-     *          },
-     *          onSyncCompleted: function(targetBucket, objectIds) {
-     *              ....
-     *          },
-     *          onSyncConflicted: function(bucket, client, server) {
-     *              ....
-     *          },
-     *          onResolveConflict: function(resolveObject, resolve) {
-     *              ....
-     *          },
-     *          onSyncError: function(errorCode, errorObject) {
-     *              ....
-     *          }
-     *      });
+     * var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
+     * bucket.setSyncEventListener({
+     *     onSyncStart: function(targetBucket) {
+     *         ....
+     *     },
+     *     onSyncCompleted: function(targetBucket, objectIds) {
+     *         ....
+     *     },
+     *     onSyncConflicted: function(bucket, client, server) {
+     *         ....
+     *     },
+     *     onResolveConflict: function(resolveObject, resolve) {
+     *         ....
+     *     },
+     *     onSyncError: function(errorCode, errorObject) {
+     *         ....
+     *     }
+     * });
      * @param {Object} listener 同期イベントを受け取るイベントリスナ
+     * <p>listener には、各同期イベント発生時のコールバックを指定する。
      * <pre>
-     * ・listener は、各同期イベント発生時のコールバックを指定する。
      *      {
-     *          onSyncStart : function(targetBucket) {
+     *          onSyncStart: function(targetBucket) {
      *              // 同期開始時に呼び出される
      *              // targetBucket : 同期対象のバケット名
      *          },
-     *          onSyncCompleted : function(targetBucket, objectIds) {
+     *          onSyncCompleted: function(targetBucket, objectIds) {
      *              // 同期完了時に呼び出される
      *              // targetBucket : 同期が完了したバケット名
      *              // objectIds    : 同期が完了したオブジェクトIDの配列
      *          },
-     *          onSyncConflicted : function(bucket, client, server) {
+     *          onSyncConflicted: function(bucket, client, server) {
      *              // 衝突発生時に呼び出される
      *              // bucket    : 衝突が発生したバケットのNebula.ObjectBucketインスタンス(衝突解決時に使用)
      *              // client    : クライアント側の衝突データ
      *              // server    : サーバ側の衝突データ
      *          },
-     *          onResolveConflict : function(resolveObject, resolve) {
+     *          onResolveConflict: function(resolveObject, resolve) {
      *              // データの衝突の解決時に呼び出される
      *              // resolveObject : 解決に使用したデータ
      *              // resolve       : 解決方法
      *          },
-     *          onSyncError : function(errorCode, errorObject) {
+     *          onSyncError: function(errorCode, errorObject) {
      *              // 同期処理中のエラー発生時に呼び出される
      *              // errorCode    : エラー種別
      *                  //  Nebula.ObjectBucket.SYNC_ERROR_PULL           ： 同期処理のPULLエラー
@@ -1365,7 +1338,7 @@ export class ObjectBucket extends BaseBucket {
      *                  //  Nebula.ObjectBucket.SYNC_ERROR_PUSH_RESYNCING ： 同期処理のpushエラー後に、同期リトライ中
      *                  //  Nebula.ObjectBucket.SYNC_ERROR_OVERLAP_ID     ： 同期処理のID重複エラー
      *              // errorObject  : エラーが発生したオブジェクト
-     *          },
+     *          }
      *     }
      * </pre>
      */
@@ -1384,21 +1357,13 @@ export class ObjectBucket extends BaseBucket {
      *      各バケットごとにsetSyncScope()を使用して同期範囲を設定すること。
      *      同期範囲が設定されていないバケットは、同期されない。
      * @example
-     *      Nebula.ObjectBucket.sync({
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
-     *   callbacks は本メソッドに対する処理結果であり、同期イベントはsetSyncEventListener()で指定されたコールバックにて通知する点に注意。
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     * Nebula.ObjectBucket.sync()
+     *     .then(function() {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>
+     * 同期イベントはPromise完了時ではなく、setSyncEventListener()で指定されたコールバックにて通知する点に注意。
      */
     static sync(callbacks?: Callbacks): Promise<void> { return null; }
 
@@ -1431,27 +1396,21 @@ export class ObjectBucket extends BaseBucket {
      * @memberOf ObjectBucket
      * @description
      *      同期を実行する(オフライン専用)。
+     *      <p>
      *      特定のオブジェクトバケットに対し同期を行う。処理の進捗はsetSyncEventListener()で指定されたコールバックにて通知する。
+     *      <p>
      *      setSyncScope()を使用して同期範囲を設定すること。同期範囲を設定しない場合、エラーとなり同期されない。
      *      本APIは、バケットモードがレプリカモードのバケットに対して呼び出すこと。
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      ....
-     *      bucket.syncBucket({
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・callbacks は、成功時と失敗時の応答コールバックを指定する。
-     *   callbacks は本メソッドに対する処理結果であり、同期イベントはsetSyncEventListener()で指定されたコールバックにて通知する点に注意。
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket(....);
+     * ....
+     * bucket.syncBucket()
+     *     .then(function() {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>
+     * 同期イベントはPromise完了時ではなく、setSyncEventListener()で指定されたコールバックにて通知する点に注意。
      */
     syncBucket(callbacks?: Callbacks): Promise<void> {
         nbLogger("ObjectBucket.syncBucket()");
@@ -1482,43 +1441,38 @@ export class ObjectBucket extends BaseBucket {
      *      衝突を解決する(オフライン専用)。
      *      同期イベントの衝突通知(onSyncConflicted)で指定されたObjectBucketインスタンスに対して実行する。
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      ....
-     *       Nebula.ObjectBucket.setSyncEventListener({
-     *          onSyncStart: function(targetBucket) {
-     *              ....
-     *          },
-     *          onSyncCompleted: function(targetBucket, objectIds) {
-     *              ....
-     *          },
-     *          onSyncConflicted: function(bucket, client, server) {
-     *              ....
-     *              bucket.resolveConflict(objectId, Nebula.ObjectBucket.RESOLVE_CLIENT);
-     *          },
-     *          onResolveConflict: function(resolveObject, resolve) {
-     *              ....
-     *          },
-     *          onSyncError: function(errorCode, errorObject) {
-     *              ....
-     *          }
-     *      });
-     *      ....
-     *      bucket.syncBucket({
-     *          success: function() {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
+     * var bucket = new Nebula.ObjectBucket(....);
+     * ....
+     *  Nebula.ObjectBucket.setSyncEventListener({
+     *     onSyncStart: function(targetBucket) {
+     *         ....
+     *     },
+     *     onSyncCompleted: function(targetBucket, objectIds) {
+     *         ....
+     *     },
+     *     onSyncConflicted: function(bucket, client, server) {
+     *         ....
+     *         bucket.resolveConflict(objectId, Nebula.ObjectBucket.RESOLVE_CLIENT);
+     *     },
+     *     onResolveConflict: function(resolveObject, resolve) {
+     *         ....
+     *     },
+     *     onSyncError: function(errorCode, errorObject) {
+     *         ....
+     *     }
+     * });
+     * ....
+     * bucket.syncBucket().then(function() {...}).catch(function(err) {...});
      * @param {string} objectId 衝突解決するオブジェクトのID
      * @param {number} resolve 衝突解決方法
-     * <pre>
-     * ・objectId には、衝突解決対象のオブジェクトのIDを指定する。
-     * ・resolve には、以下のいずれかの衝突解決方法を指定する。
-     *      Nebula.ObjectBucket.RESOLVE_CLIENT  ： クライアント優先で解決
-     *      Nebula.ObjectBucket.RESOLVE_SERVER  ： サーバ優先で解決
-     * </pre>
+     * <ul>
+     * <li>objectId には、衝突解決対象のオブジェクトのIDを指定する。
+     * <li>resolve には、以下のいずれかの衝突解決方法を指定する。
+     *     <ul>
+     *     <li>Nebula.ObjectBucket.RESOLVE_CLIENT  ： クライアント優先で解決
+     *     <li>Nebula.ObjectBucket.RESOLVE_SERVER  ： サーバ優先で解決
+     *     </ul>
+     * </ul>
      */
     resolveConflict(objectId: string, resolve: number) {
         nbLogger("ObjectBucket.resolveConflict()");
@@ -1546,28 +1500,24 @@ export class ObjectBucket extends BaseBucket {
      *      オブジェクトバケットにインデックス設定する(オフライン専用)。
      *      本APIはオフラインのみで利用可能
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
-     *      ....
-     *      index = {
-     *          "index": [{"name": "key1", "type": "string"}, {"name": "key2", "type": "number"}]
-     *      };
-     *      callbacks = {
-     *          success: function() {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.setIndexToLocal(index, callbacks);
+     * var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);
+     * ....
+     * index = {
+     *     "index": [{"name": "key1", "type": "string"}, {"name": "key2", "type": "number"}]
+     * };
+     * callbacks = {
+     *     success: function() {....},
+     *     error: function(err) {....}
+     * };
+     * bucket.setIndexToLocal(index, callbacks);
      * @param {Object} index インデックス情報
      *      インデックス情報は以下のようにJSONで指定する
      *      <pre>
      *      {
      *          "index": [{"name": "key1", "type": "string"}, {"name": "key2", "type": "number"}]
-     *      }
-     *      </pre>
-     *      ・index にはインデックスを設定するキー名と型を指定する。型は文字列で"string","boolean","number"のいずれかを指定する。
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     * </pre>
+     *      }</pre>
+     *      index にはインデックスを設定するキー名と型を指定する。型は文字列で"string","boolean","number"のいずれかを指定する。
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
      */
     setIndexToLocal(index: JsonObject, callbacks?: Callbacks): Promise<void> {
@@ -1607,25 +1557,22 @@ export class ObjectBucket extends BaseBucket {
      *      オブジェクトバケットに設定されているインデックスを取得する(オフライン専用)。
      *      本APIはオフラインのみで利用可能
      * @example
-     *      var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);;
-     *      ....
-     *      callbacks = {
-     *          success: function(index) {....},
-     *          error: function(err) {....}
-     *      };
-     *      bucket.getIndexFromLocal(callbacks);
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
+     * var bucket = new Nebula.ObjectBucket("Books", Nebula.BUCKET_MODE_REPLICA);;
+     * ....
+     * bucket.getIndexFromLocal()
+     *     .then(function(index) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
+     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: インデックス情報(JSON)。以下例を示す。
      * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(index)
-     *             index : インデックス情報(インデックス情報はJSON)
-     * ・インデックス情報は以下のように格納される
      *      {
      *          "index": [{"name": "key1", "type": "string"}, {"name": "Key2", "type": "number"}]
-     *      }
-     * </pre>
-     * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     *      }</pre>
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getIndexFromLocal(callbacks?: Callbacks): Promise<JsonObject> {
         nbLogger("ObjectBucket.getIndexLocal()");
@@ -1666,24 +1613,18 @@ export class ObjectBucket extends BaseBucket {
      *      一度も同期していない場合、nullを返す。
      *      本APIは、バケットモードがレプリカモードのバケットに対して呼び出すこと。
      * @example
-     *      var bucket = new Nebula.ObjectBucket(....);
-     *      ....
-     *      bucket.getLastSyncTime( {
-     *          success: function(lastSyncTime) {
-     *              ....
-     *          },
-     *          error: function(err) {
-     *              ....
-     *          }
-     *      });
-     * @param {Callbacks} callbacks 成功時と失敗時の応答コールバック
-     * <pre>
-     * ・処理が成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(lastSyncTime)
-     *             lastSyncTime : 最終同期日時。
-     * </pre>
+     * var bucket = new Nebula.ObjectBucket(....);
+     * ....
+     * bucket.getLastSyncTime()
+     *     .then(function(lastSyncTime) {...})
+     *     .catch(function(err) {...});
+     * @param {Callbacks} callbacks コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: 最終同期日時
+     * <li>失敗時: エラー要因(JSON)
+     * </ul>
      */
     getLastSyncTime(callbacks?: Callbacks): Promise<string> {
         nbLogger("ObjectBucket.getLastSyncTime()");
@@ -1746,29 +1687,24 @@ export class ObjectBucket extends BaseBucket {
      * @description
      * バッチリクエストを実行する
      * @example
-     *     // リクエスト生成
-     *     var req = new Nebula.BatchRequest();
-     *     // 追加オブジェクト設定
-     *     req.addInsertRequest({"name": "Taro Nichiden", "score": 70});
-     *     req.addInsertRequest({"name": "Hanako Nichiden", "score": 80});
-     *     // バッチリクエスト実行
-     *     bucket.batch(req).then(function(result) {...});
+     * // リクエスト生成
+     * var req = new Nebula.BatchRequest();
+     * // 追加オブジェクト設定
+     * req.addInsertRequest({"name": "Taro Nichiden", "score": 70});
+     * req.addInsertRequest({"name": "Hanako Nichiden", "score": 80});
+     * // バッチリクエスト実行
+     * bucket.batch(req).then(function(result) {...});
      * @param {BatchRequest} request バッチリクエスト
-     * @param {Callbacks} callbacks 応答コールバック
-     * <pre>
-     * ・バッチ処理が一部でも成功した場合、success の呼び出しにて通知する。
-     *     success の書式は以下の通りとする。
-     *         success(result)
-     *             result : バッチ応答(JSON)。応答フォーマットは REST API 仕様書を参照のこと。
-     *             'results'プロパティに結果が格納される。
-     *             これに加え、'failedCount'プロパティに処理失敗したリクエストの数が格納される。
-     *
-     * ・バッチ処理全体が失敗した場合は、error の呼び出しにて通知する。
-     *     error の書式は以下の通りとする。
-     *         error(error)
-     *             error : エラー要因がJSON 形式で返る。
-     * </pre>
+     * @param {Callbacks} callbacks 応答コールバック (Option)
      * @return {Promise} callbacksを指定しなかった場合、Promiseオブジェクトを返す。callback指定時は返り値なし(undefined)。
+     * <p>処理完了時に渡される値は以下の通り。
+     * <ul>
+     * <li>成功時: バッチ応答(JSON)。バッチ処理が一部でも成功した場合、成功となる。<p>
+     *               応答フォーマットは REST API リファレンスを参照のこと。
+     *               'results'プロパティに結果が格納される。
+     *               これに加え、'failedCount'プロパティに処理失敗したリクエストの数が格納される。
+     * <li>失敗時: エラー要因(JSON)。バッチ処理全体が失敗した場合にエラーとなる。
+     * </ul>
      * @since v4.0.0
      */
     batch(request: BatchRequest, callbacks?: Callbacks): Promise<BatchResponseJson> {
