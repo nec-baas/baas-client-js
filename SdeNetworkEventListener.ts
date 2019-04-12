@@ -1,4 +1,6 @@
-import {nbLogger, sde, nbError, JsonObject} from "./Head";
+import {nbLogger, nbError, JsonObject} from "./Head";
+
+declare var sde: any;
 
 export interface NetworkEventListener {
     onNetworkStateChanged(isOnline: boolean): void;
@@ -26,13 +28,14 @@ export class _SdeNetworkEventListener {
         }
 
         const sdeParams = {
+            action: "NebulaNetworkEventManager.setNetworkEventListener",
             params: JSON.stringify(data),
             callback: ""
         };
-
+        
         nbLogger("_SdeNetworkEventListener.setCallback(), sdeParams=" + JSON.stringify(sdeParams));
-
-        return sde.smt.common.exIfExecute("NebulaNetworkEventManager", "setNetworkEventListener", sdeParams);
+        
+        return sde.smt.common.exIfExecute("NebulaSdePlugin", "execute", sdeParams);
     }
 
     static onNetworkStateChanged(params: JsonObject) {

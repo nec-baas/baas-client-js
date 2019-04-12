@@ -1,7 +1,9 @@
 import {ApiRequest} from "./HttpRequest";
-import {_createError, Callbacks, nbError, nbLogger, sde} from "./Head";
+import {_createError, Callbacks, nbError, nbLogger} from "./Head";
 
 import {Promise} from "es6-promise";
+
+declare var sde: any;
 
 /**
  * @class SDEブリッジリクエストクラス

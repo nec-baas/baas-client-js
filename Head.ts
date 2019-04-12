@@ -1,9 +1,6 @@
 import {Nebula} from "./Nebula";
 import {Promise} from "es6-promise";
 
-// SDE4SD
-export declare var sde: any;
-
 interface Window { XMLHttpRequest: XMLHttpRequest; }
 
 export const root = this;

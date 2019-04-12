@@ -1,5 +1,7 @@
-import {nbLogger, nbError, sde} from "./Head";
+import {nbLogger, nbError} from "./Head";
 import {Nebula} from "./Nebula";
+
+declare var sde: any;
 
 /**
  * 同期イベントリスナ
@@ -43,7 +45,7 @@ export class _SdeSyncEventListener {
         const bucketName = bucket.getBucketName();
         const bucketMode = bucket.getBucketMode();
 
-        if (listener == null) {
+        if (listener != null) {
             this._listeners[bucketName] = listener;
             this._bucketMode[bucketName] = bucketMode;
         } else {
@@ -69,25 +71,28 @@ export class _SdeSyncEventListener {
         }
 
         const sdeParams = {
+            action: "NebulaSyncEventManager.setSyncEventListener",
             params: JSON.stringify(data),
             callback: ""
         };
-
+        
         nbLogger("_SyncEventListener.setCallback(), sdeParams=" + JSON.stringify(sdeParams));
-        return sde.smt.common.exIfExecute("NebulaSyncEventManager", "setSyncEventListener", sdeParams);
+        
+        return sde.smt.common.exIfExecute("NebulaSdePlugin", "execute", sdeParams);
     }
 
     static resolveConflict(data: ResolveConflictParams) {
         nbLogger("_SyncEventListener.resolveConflict(), data=" + data);
-
+      
         const sdeParams = {
+            action: "NebulaSyncEventManager.resolveConflict",
             params: JSON.stringify(data),
             callback: ""
         };
-
+        
         nbLogger("_SyncEventListener.resolveConflict(), sdeParams=" + JSON.stringify(sdeParams));
-
-        return sde.smt.common.exIfExecute("NebulaSyncEventManager", "resolveConflict", sdeParams);
+        
+        return sde.smt.common.exIfExecute("NebulaSdePlugin", "execute", sdeParams);
     }
 
     static onSyncStart(params: any) {
