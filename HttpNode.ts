@@ -74,13 +74,15 @@ export class HttpNode extends HttpRequestExecutor {
             key: null,
             cert: null,
             ca: null,
+            privateKeyEngine: null,
+            privateKeyIdentifier: null,
             rejectUnauthorized: true
         };
 
         // クライアント証明書認証用オプション指定
         if (isHttps) {
             // client cert options
-            const allowedClientCertOptions = ['pfx', 'passphrase', 'key', 'cert', 'ca'];
+            const allowedClientCertOptions = ['pfx', 'passphrase', 'key', 'cert', 'ca', 'privateKeyEngine', 'privateKeyIdentifier'];
             // set Client Cert options if exists
             const clientCertOptions = this._req.service._config.clientCertOptions;
             if (clientCertOptions != null) {
