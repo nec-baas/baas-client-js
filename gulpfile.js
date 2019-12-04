@@ -84,7 +84,7 @@ const installDirs = ['test/ft/nodejs-test/installed'];
  * TypeScript ソースのマージ。
  * 不要な import 文も同時に削除する。
  */
-gulp.task('concat', () => {
+function gulp_concat() {
     return gulp.src(tsSources)
         .pipe(replace(/(import .* from .*)/g, (str) => { // remove import
             if (!str.match(/KEEP/)) { // コメントに KEEP が入っているものは除去しない
@@ -94,52 +94,57 @@ gulp.task('concat', () => {
         }))
         .pipe(concat('baas.ts'))
         .pipe(gulp.dest('./build'));
-});
+}
+exports.concat = gulp.series(gulp_concat);
 
 /**
  * TypeScript のトランスパイル
  */
-gulp.task('ts', ['concat'], () => {
+function ts() {
     const tsProject = typescript.createProject("tsconfig.json");
     return tsProject.src()
         .pipe(tsProject())
         .pipe(gulp.dest('./'));
-});
+}
+exports.ts = gulp.series(this.concat, ts);
 
 /**
  * copy
  */
-gulp.task('copy', ['ts'], () => {
+function copy() {
     return gulp.src(['build/baas.d.ts', 'node_modules/es6-promise/dist/es6-promise.auto.*js'])
         .pipe(gulp.dest('./dist'));
-});
+}
+exports.copy = gulp.series(this.ts, copy);
 
 /**
  * ヘッダ/トレイラを連結して baas.full.js 生成
  */
-gulp.task('js-full', ['copy'], () => {
+function js_full() {
     return gulp.src(['build/baas.js'])
         //.pipe(insert.wrap('\n(function(){ // begin immediate\n', '\n}).call(this); // end immediate\n'))
         .pipe(addsrc.prepend(headers))
         .pipe(addsrc.append(trailers))
         .pipe(concat('baas.full.js'))
         .pipe(gulp.dest('./dist'));
-});
+}
+exports.js_full = gulp.series(this.copy, js_full);
 
 /**
  * baas.js 生成(strip)
  */
-gulp.task('js', ['js-full'], () => {
+function js() {
     return gulp.src(['dist/baas.full.js'])
         .pipe(strip({safe: true}))
         .pipe(rename('baas.js'))
         .pipe(gulp.dest('./dist'));
-});
+}
+exports.js = gulp.series(this.js_full, js);
 
 /**
  * build(minify)
  */
-gulp.task('build', ['js'], () => {
+function build() {
     return gulp.src('dist/baas.js')
         .pipe(sourcemaps.init({loadMaps: false}))
         .pipe(uglify({output: {comments: /^|@license|/i}}))
@@ -147,50 +152,58 @@ gulp.task('build', ['js'], () => {
         .pipe(rename({extname: '.min.js'}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./dist'));
-});
+}
+exports.build = gulp.series(this.js, build);
 
 /**
  * test
  */
-gulp.task('test', ['ts'], () => {
+function test() {
     return gulp.src('ut/*.js')
         .pipe(mocha())
         .on('error', (err) => console.log(err));
-});
+}
+exports.test = gulp.series(this.ts, test);
 
 /**
  * lint
  */
-gulp.task('tslint', () => {
-    gulp.src(['*.ts', 'push/*.ts', 'ut/*.ts'])
+function gulp_tslint() {
+    return gulp.src(['*.ts', 'push/*.ts', 'ut/*.ts'])
         .pipe(tslint({configuration: './tslint.json'}))
         .pipe(tslint.report());
-});
+}
+exports.tslint = gulp.series(gulp_tslint);
 
 /**
  * clean
  */
-gulp.task('clean', () => {
+function clean(done) {
     del(targets);
     del('ut/*.js')
     del('ut/*.d.ts')
     del('build');
     del('dist');
-});
+
+    done();
+}
+exports.clean = gulp.series(clean);
 
 /**
  * インストール
  */
-gulp.task('install', ['build'], () => {
+function install(done) {
     installDirs.forEach(function (dir) {
-        gulp.src(dist_targets).pipe(gulp.dest('../' + dir));
+        return gulp.src(dist_targets).pipe(gulp.dest('../' + dir));
     });
-});
+    done();
+}
+exports.install = gulp.series(this.build, install);
 
 /**
  * アンインストール
  */
-gulp.task('uninstall', () => {
+function uninstall() {
     const paths = [];
     installDirs.forEach((dir) => {
         targets.forEach((file) => {
@@ -199,28 +212,32 @@ gulp.task('uninstall', () => {
         });
     });
     return del(paths, {force: true});
-});
+}
+exports.uninstall = gulp.series(uninstall);
 
 /**
  * JSDoc 生成
  */
 // jsdoc3
-gulp.task('jsdoc3', ['js'], (cb) => {
+function gulp_jsdoc3(done) {
     const config = require('./doc/jsdoc.json');
     gulp.src(['doc/header.md', 'doc/global.js', 'build/baas.js'], {read: false})
-        .pipe(jsdoc3(config, cb));
-    
-});
+        .pipe(jsdoc3(config, done));
+
+}
+exports.jsdoc3 = gulp.series(gulp_concat, ts, copy, js_full, js, gulp_jsdoc3);
 
 // デフォルト
-gulp.task('default', ['build']);
+exports.default = gulp.series(gulp_concat, ts, copy, js_full, js, build);
 
 // watch
-gulp.task('watch', () => {
-    gulp.watch(tsSources, ['install']);
-    gulp.watch(["ut/*.ts", "!**/baas.ts", "!**/*.d.ts"], ['ts']);
-});
+function watch() {
+    gulp.watch(tsSources, gulp.series(gulp_concat, ts, copy, js_full, js, build, install));
+    return gulp.watch(["ut/*.ts", "!**/baas.ts", "!**/*.d.ts"], gulp.series(gulp_concat, ts));
+}
+exports.watch = gulp.series(watch);
 
-gulp.task('watch-jsdoc3', () => {
-    gulp.watch(["*.ts", "push/*.ts", "!**/baas.ts", "!**/*.d.ts", "doc/*.md", "doc/jsdoc.json"], ['jsdoc3']);
-});
+function watch_jsdoc3() {
+    return gulp.watch(["*.ts", "push/*.ts", "!**/baas.ts", "!**/*.d.ts", "doc/*.md", "doc/jsdoc.json"], gulp.series(gulp_concat, ts, copy, js_full, js, gulp_jsdoc3));
+}
+exports.watch_jsdoc3 = gulp.series(watch_jsdoc3);
