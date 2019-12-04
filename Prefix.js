@@ -1,7 +1,7 @@
 /*!
- * NEC Mobile Backend Platform JavaScript SDK version 7.5.1
+ * NEC Mobile Backend Platform JavaScript SDK version 7.5.2
  *
- * Copyright 2014-2018, NEC Corporation.
+ * Copyright 2014-2019, NEC Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
