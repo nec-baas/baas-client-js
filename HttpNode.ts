@@ -74,13 +74,15 @@ export class HttpNode extends HttpRequestExecutor {
             key: null,
             cert: null,
             ca: null,
+            privateKeyEngine: null,
+            privateKeyIdentifier: null,
             rejectUnauthorized: true
         };
 
         // クライアント証明書認証用オプション指定
         if (isHttps) {
             // client cert options
-            const allowedClientCertOptions = ['pfx', 'passphrase', 'key', 'cert', 'ca'];
+            const allowedClientCertOptions = ['pfx', 'passphrase', 'key', 'cert', 'ca', 'privateKeyEngine', 'privateKeyIdentifier'];
             // set Client Cert options if exists
             const clientCertOptions = this._req.service._config.clientCertOptions;
             if (clientCertOptions != null) {
@@ -118,6 +120,12 @@ export class HttpNode extends HttpRequestExecutor {
                 this._reject(error);
                 return;
             }
+        }
+
+        // 値が未設定の場合はオプションから削除
+        if (options['privateKeyEngine'] == null || options['privateKeyIdentifier'] == null) {
+            delete options['privateKeyEngine'];
+            delete options['privateKeyIdentifier'];
         }
 
         if (http2 != null && useHttp2) {
